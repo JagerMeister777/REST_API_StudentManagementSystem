@@ -1,4 +1,4 @@
-package raisetech.rest.api.studentManagement.dto;
+package raisetech.rest.api.studentManagement.dto.respons;
 
 import java.util.List;
 import lombok.Getter;
@@ -12,9 +12,9 @@ import raisetech.rest.api.studentManagement.data.StudentsCourses;
 public class StudentWithCoursesDTO {
 
   private Student student;
-  private List<StudentsCourses> studentsCourses;
+  private List<StudentsCoursesDetail> studentsCourses;
 
-  public StudentWithCoursesDTO(Student student, List<StudentsCourses> studentsCourses) {
+  public StudentWithCoursesDTO(Student student, List<StudentsCoursesDetail> studentsCourses) {
     this.student = student;
     this.studentsCourses = studentsCourses;
   }

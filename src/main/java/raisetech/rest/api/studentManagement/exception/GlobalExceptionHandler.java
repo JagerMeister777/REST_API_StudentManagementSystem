@@ -1,4 +1,4 @@
-package raisetech.rest.api.studentManagement.exceptions;
+package raisetech.rest.api.studentManagement.exception;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -6,11 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Course {
 
   private int id;
   private String name;
+
+  public Course(String name) {
+    this.name = name;
+  }
+
+  public Course(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }
