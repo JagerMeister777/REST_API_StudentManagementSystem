@@ -19,7 +19,7 @@ public interface StudentRepository {
    * 受講生情報の更新
    * @param student 受講生情報
    */
-  @Update("UPDATE students SET full_name = #{fullName}, furigana = #{furigana}, nick_name = #{nickName}, email = #{email}, living_area = #{livingArea}, age = #{age}, gender = #{gender}, remark = #{remark}, isDeleted = #{isDeleted} WHERE id = #{id}")
-  Student updateStudent(Student student);
+  @Update("UPDATE students SET full_name = #{student.fullName}, furigana = #{student.furigana}, nick_name = #{student.nickName}, email = #{student.email}, living_area = #{student.livingArea}, age = #{student.age}, gender = #{student.gender}, remark = #{student.remark}, isDeleted = #{student.isDeleted} WHERE id = #{id}")
+  void updateStudent(int id,Student student);
 
 }

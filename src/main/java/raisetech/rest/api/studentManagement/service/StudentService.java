@@ -48,7 +48,8 @@ public class StudentService {
         converter.convertStudentsCoursesDetail(studentsCoursesService.getOneStudentsCoursesList(id)));
   }
 
-  public Student updateStudent(Student updateStudent) {
-    return studentRepository.updateStudent(updateStudent);
+  public Student updateStudent(int id,Student updateStudent) {
+    studentRepository.updateStudent(id,updateStudent);
+    return updateStudent;
   }
 }
