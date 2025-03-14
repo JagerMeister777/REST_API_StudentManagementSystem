@@ -3,6 +3,7 @@ package raisetech.rest.api.studentManagement.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.repository.StudentsCoursesRepository;
@@ -24,5 +25,14 @@ public class StudentsCoursesService {
    */
   public List<StudentsCourses> getOneStudentsCoursesList(int id) {
     return studentsCoursesRepository.findByStudentId(id);
+  }
+
+  @Transactional
+  public void registerStudentsCourses(List<StudentsCourses> studentsCourses) {
+    studentsCourses.forEach(studentsCoursesRepository::registerStudentsCourses);
+  }
+
+  public void registerHandling() {
+
   }
 }

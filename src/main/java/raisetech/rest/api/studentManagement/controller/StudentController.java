@@ -10,24 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.rest.api.studentManagement.converter.StudentWithCoursesDTOConverter;
-import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.dto.StudentWithCoursesDTO;
-import raisetech.rest.api.studentManagement.exceptions.DuplicateStudentException;
 import raisetech.rest.api.studentManagement.service.StudentService;
+import raisetech.rest.api.studentManagement.service.StudentsCoursesService;
 
 @RestController
 @RequestMapping("/api")
 public class StudentController {
 
   private final StudentService studentService;
-  private final StudentWithCoursesDTOConverter converter;
+  private final StudentsCoursesService studentsCoursesService;
 
   @Autowired
   public StudentController(StudentService studentService,
-      StudentWithCoursesDTOConverter converter) {
+      StudentsCoursesService studentsCoursesService) {
     this.studentService = studentService;
-    this.converter = converter;
+    this.studentsCoursesService = studentsCoursesService;
   }
 
   /**
@@ -40,14 +38,20 @@ public class StudentController {
     return ResponseEntity.ok(studentService.getAllStudents());
   }
 
+  /**
+   * 特定の受講生情報の取得
+   * @param id 受講生ID
+   * @return 受講生情報
+   */
   @GetMapping("/student/{id}")
-  public ResponseEntity<Student> getOneStudent(@PathVariable int id) {
+  public ResponseEntity<StudentWithCoursesDTO> getOneStudent(@PathVariable int id) {
     return ResponseEntity.ok(studentService.getOneStudent(id));
   }
 
   @PostMapping("/student/register")
-  public ResponseEntity<?> registerStudent(@RequestBody Student student) {
-    Student registerStudent = studentService.registerStudent(student);
-    return new ResponseEntity<>(registerStudent, HttpStatus.CREATED);
+  public ResponseEntity<?> registerStudent(@RequestBody StudentWithCoursesDTO studentWithCoursesDTO) {
+    studentService.registerStudent(studentWithCoursesDTO.getStudent());
+    studentsCoursesService.registerStudentsCourses(studentWithCoursesDTO.getStudentsCourses());
+    return new ResponseEntity<>(studentWithCoursesDTO,HttpStatus.CREATED);
   }
 }

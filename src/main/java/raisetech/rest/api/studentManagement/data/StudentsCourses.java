@@ -13,4 +13,21 @@ public class StudentsCourses {
   private int courseId;
   private LocalDateTime courseStartDate;
   private LocalDateTime courseEndDate;
+
+  public StudentsCourses(int studentId, int courseId, LocalDateTime courseStartDate,
+      LocalDateTime courseEndDate) {
+    this.studentId = studentId;
+    this.courseId = courseId;
+    this.courseStartDate = courseStartDate;
+    this.courseEndDate = courseEndDate;
+  }
+
+  public StudentsCourses(int id, int studentId, int courseId, LocalDateTime courseStartDate,
+      LocalDateTime courseEndDate) {
+    this.id = id;
+    this.studentId = studentId;
+    this.courseId = courseId;
+    this.courseStartDate = courseStartDate;
+    this.courseEndDate = courseEndDate;
+  }
 }

@@ -28,6 +28,28 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(StudentsCoursesCombinationException.class)
+  public ResponseEntity<Map<String,Object>> handleStudentsCoursesCombinationException(StudentsCoursesCombinationException ex) {
+    Map<String,Object> errorResponse = new HashMap<>();
+    errorResponse.put("status",409);
+    errorResponse.put("error","Conflict");
+    errorResponse.put("message",ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(StudentNotFoundException.class)
+  public ResponseEntity<Map<String,Object>> handleStudentNotFound(StudentNotFoundException ex) {
+    Map<String,Object> errorResponse = new HashMap<>();
+    errorResponse.put("status",404);
+    errorResponse.put("error","Not Found Student");
+    errorResponse.put("message",ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
   /**
    * timestampのフォーマット
    * @return yyyy-MM-dd HH:mm:ss形式の時刻

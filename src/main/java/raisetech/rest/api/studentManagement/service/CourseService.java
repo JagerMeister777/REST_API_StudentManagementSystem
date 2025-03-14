@@ -14,7 +14,11 @@ public class CourseService {
     this.courseRepository = courseRepository;
   }
 
-  public String getOneCourseName(int id) {
+  public String getOneCourseId(int id) {
    return courseRepository.findByCourseId(id).getName();
+  }
+
+  public int getOneCourseId(String courseName) {
+    return courseRepository.findByCourseName(courseName).getId();
   }
 }

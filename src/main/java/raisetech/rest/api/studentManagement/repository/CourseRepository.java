@@ -9,4 +9,7 @@ public interface CourseRepository {
 
   @Select("SELECT * FROM courses WHERE id = #{id}")
   Course findByCourseId(int id);
+
+  @Select("SELECT * FROM courses WHERE course_name = #{courseName}")
+  Course findByCourseName(String courseName);
 }
