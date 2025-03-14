@@ -10,11 +10,11 @@ import raisetech.rest.api.studentManagement.data.Student;
 @Mapper
 public interface StudentRepository {
 
-  @Select("SELECT * FROM students")
+  @Select("SELECT * FROM students WHERE isDeleted = false")
   List<Student> getAllStudents();
 
   @Select("SELECT * FROM students WHERE id = #{id}")
-  Student findByStudentId(Long id);
+  Student findByStudentId(int id);
 
   @Select("SELECT * FROM students WHERE email = #{email}")
   Optional<Student> findByEmail(String email);

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import raisetech.rest.api.studentManagement.converter.StudentWithCoursesDTOConverter;
 import raisetech.rest.api.studentManagement.data.Student;
+import raisetech.rest.api.studentManagement.dto.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.exceptions.DuplicateStudentException;
 import raisetech.rest.api.studentManagement.service.StudentService;
 
@@ -19,10 +21,13 @@ import raisetech.rest.api.studentManagement.service.StudentService;
 public class StudentController {
 
   private final StudentService studentService;
+  private final StudentWithCoursesDTOConverter converter;
 
   @Autowired
-  public StudentController(StudentService studentService) {
+  public StudentController(StudentService studentService,
+      StudentWithCoursesDTOConverter converter) {
     this.studentService = studentService;
+    this.converter = converter;
   }
 
   /**
@@ -31,12 +36,12 @@ public class StudentController {
    * @return 受講生情報のリスト
    */
   @GetMapping("/students")
-  public ResponseEntity<List<Student>> getAllStudents() {
+  public ResponseEntity<List<StudentWithCoursesDTO>> getAllStudents() {
     return ResponseEntity.ok(studentService.getAllStudents());
   }
 
   @GetMapping("/student/{id}")
-  public ResponseEntity<Student> getOneStudent(@PathVariable Long id) {
+  public ResponseEntity<Student> getOneStudent(@PathVariable int id) {
     return ResponseEntity.ok(studentService.getOneStudent(id));
   }
 
