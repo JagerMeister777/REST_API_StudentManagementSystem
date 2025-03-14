@@ -1,9 +1,11 @@
 package raisetech.rest.api.studentManagement.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.repository.StudentsCoursesRepository;
@@ -20,19 +22,12 @@ public class StudentsCoursesService {
 
   /**
    * 特定の受講生の受講しているコース情報を取得
+   *
    * @param id 受講生ID
    * @return 受講生コース情報
    */
   public List<StudentsCourses> getOneStudentsCoursesList(int id) {
     return studentsCoursesRepository.findByStudentId(id);
   }
-
-  @Transactional
-  public void registerStudentsCourses(List<StudentsCourses> studentsCourses) {
-    studentsCourses.forEach(studentsCoursesRepository::registerStudentsCourses);
-  }
-
-  public void registerHandling() {
-
-  }
 }
+

@@ -6,11 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
+import raisetech.rest.api.studentManagement.data.Course;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.exceptions.DuplicateStudentException;
 import raisetech.rest.api.studentManagement.exceptions.StudentNotFoundException;
+import raisetech.rest.api.studentManagement.exceptions.StudentsCoursesCombinationException;
 import raisetech.rest.api.studentManagement.repository.StudentRepository;
 
 @Service
@@ -18,12 +21,14 @@ public class StudentService {
 
   private final StudentRepository studentRepository;
   private final StudentsCoursesService studentsCoursesService;
+  private final StudentsCoursesConverter converter;
 
   @Autowired
   public StudentService(StudentRepository studentRepository,
-      StudentsCoursesService studentsCoursesService) {
+      StudentsCoursesService studentsCoursesService, StudentsCoursesConverter converter) {
     this.studentRepository = studentRepository;
     this.studentsCoursesService = studentsCoursesService;
+    this.converter = converter;
   }
 
   /**
@@ -31,12 +36,7 @@ public class StudentService {
    * @return 受講生情報のリスト
    */
   public List<StudentWithCoursesDTO> getAllStudents() {
-    List<StudentWithCoursesDTO> studentWithCoursesDTOS = new ArrayList<>();
-    studentRepository.getAllStudents().forEach(student -> {
-      List<StudentsCourses> studentsCoursesList = studentsCoursesService.getOneStudentsCoursesList(student.getId());
-        studentWithCoursesDTOS.add(new StudentWithCoursesDTO(student,studentsCoursesList));
-      });
-    return studentWithCoursesDTOS;
+    return converter.convertStudentWithCoursesDTO();
   }
 
   /**
@@ -51,14 +51,5 @@ public class StudentService {
     }
     List<StudentsCourses> studentsCoursesList = studentsCoursesService.getOneStudentsCoursesList(id);
     return new StudentWithCoursesDTO(student,studentsCoursesList);
-  }
-
-  @Transactional
-  public void registerStudent(Student student) {
-    Student existStudent = studentRepository.findByEmail(student.getEmail());
-    if (Optional.ofNullable(existStudent).isPresent()) {
-      throw new DuplicateStudentException("このメールアドレスは既に使用されています。");
-    }
-    studentRepository.registerStudent(student);
   }
 }

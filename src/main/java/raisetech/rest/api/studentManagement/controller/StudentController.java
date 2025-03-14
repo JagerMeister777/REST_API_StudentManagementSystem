@@ -19,13 +19,10 @@ import raisetech.rest.api.studentManagement.service.StudentsCoursesService;
 public class StudentController {
 
   private final StudentService studentService;
-  private final StudentsCoursesService studentsCoursesService;
 
   @Autowired
-  public StudentController(StudentService studentService,
-      StudentsCoursesService studentsCoursesService) {
+  public StudentController(StudentService studentService) {
     this.studentService = studentService;
-    this.studentsCoursesService = studentsCoursesService;
   }
 
   /**
@@ -46,12 +43,5 @@ public class StudentController {
   @GetMapping("/student/{id}")
   public ResponseEntity<StudentWithCoursesDTO> getOneStudent(@PathVariable int id) {
     return ResponseEntity.ok(studentService.getOneStudent(id));
-  }
-
-  @PostMapping("/student/register")
-  public ResponseEntity<?> registerStudent(@RequestBody StudentWithCoursesDTO studentWithCoursesDTO) {
-    studentService.registerStudent(studentWithCoursesDTO.getStudent());
-    studentsCoursesService.registerStudentsCourses(studentWithCoursesDTO.getStudentsCourses());
-    return new ResponseEntity<>(studentWithCoursesDTO,HttpStatus.CREATED);
   }
 }

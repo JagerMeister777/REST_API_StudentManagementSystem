@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
+
+  /**
+   * 登録するコースを既に受講しているときのエラーハンドリング
+   * @param ex StudentsCoursesCombinationException
+   * @return ConflictError
+   */
   @ExceptionHandler(StudentsCoursesCombinationException.class)
   public ResponseEntity<Map<String,Object>> handleStudentsCoursesCombinationException(StudentsCoursesCombinationException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
@@ -39,6 +45,11 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
+  /**
+   * 受講生情報が見つからなかった時のエラーハンドリング
+   * @param ex StudentNotFoundException
+   * @return NotFoundError
+   */
   @ExceptionHandler(StudentNotFoundException.class)
   public ResponseEntity<Map<String,Object>> handleStudentNotFound(StudentNotFoundException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
