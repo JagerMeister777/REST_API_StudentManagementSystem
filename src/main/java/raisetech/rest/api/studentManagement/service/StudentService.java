@@ -46,7 +46,7 @@ public class StudentService {
    */
   public StudentWithCoursesDTO getOneStudent(int id) {
     Student student = studentRepository.findByStudentId(id);
-    if (Optional.ofNullable(student).isEmpty()) {
+    if (student == null) {
       throw new StudentNotFoundException("受講生情報が存在しませんでした。");
     }
     List<StudentsCourses> studentsCoursesList = studentsCoursesService.getOneStudentsCoursesList(id);
