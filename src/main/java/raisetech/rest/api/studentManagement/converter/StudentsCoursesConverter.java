@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import raisetech.rest.api.studentManagement.data.Course;
+import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
@@ -17,48 +19,35 @@ import raisetech.rest.api.studentManagement.service.StudentsCoursesService;
 @Component
 public class StudentsCoursesConverter {
 
-  private final StudentsCoursesRepository studentsCoursesRepository;
-  private final StudentRepository studentRepository;
-  private final CourseRepository courseRepository;
-
-  @Autowired
-  public StudentsCoursesConverter(StudentsCoursesRepository studentsCoursesRepository,
-      StudentRepository studentRepository, CourseRepository courseRepository) {
-    this.studentsCoursesRepository = studentsCoursesRepository;
-    this.studentRepository = studentRepository;
-    this.courseRepository = courseRepository;
-  }
-
   /**
    * 受講生情報と受講生コース情報を組み合わせるコンバーター
    * @return 全件受講生情報(List型のStudentWithCoursesDTO)
    */
-  public List<StudentWithCoursesDTO> convertStudentWithCoursesDTO() {
-    List<StudentWithCoursesDTO> studentWithCoursesDTOS = new ArrayList<>();
-
-    studentRepository.getAllStudents().forEach(student -> {
-      studentWithCoursesDTOS.add(new StudentWithCoursesDTO(
-          student,
-          convertStudentsCoursesDetail(
-              studentsCoursesRepository.findByStudentId(student.getId())
-          )
-      ));
-    });
-    return studentWithCoursesDTOS;
+  public StudentWithCoursesDTO convertStudentWithCoursesDTO(Student student,List<StudentsCourses> studentsCoursesList,List<Course> courseList) {
+    return new StudentWithCoursesDTO(
+        student,
+        convertStudentsCoursesDetail(
+            studentsCoursesList,
+            student.getFullName(),
+            courseList
+        )
+    );
   }
 
-  public List<StudentsCoursesDetail> convertStudentsCoursesDetail(List<StudentsCourses> studentsCoursesList) {
+  public List<StudentsCoursesDetail> convertStudentsCoursesDetail(List<StudentsCourses> studentsCoursesList,String studentFullName,List<Course> courseList) {
     List<StudentsCoursesDetail> studentsCoursesDetails = new ArrayList<>();
     studentsCoursesList.forEach(studentsCourses -> {
-      String studentName = studentRepository.findByStudentId(studentsCourses.getStudentId()).getFullName();
-      String courseName = courseRepository.findByCourseId(studentsCourses.getCourseId()).getName();
-      StudentsCoursesDetail studentsCoursesDetail = new StudentsCoursesDetail(
-          studentName,
-          courseName,
-          studentsCourses.getCourseStartDate(),
-          studentsCourses.getCourseEndDate()
-      );
-      studentsCoursesDetails.add(studentsCoursesDetail);
+      courseList.forEach(course -> {
+        if (course.getId() == studentsCourses.getCourseId()) {
+          StudentsCoursesDetail studentsCoursesDetail = new StudentsCoursesDetail(
+              studentFullName,
+              course.getName(),
+              studentsCourses.getCourseStartDate(),
+              studentsCourses.getCourseEndDate()
+          );
+          studentsCoursesDetails.add(studentsCoursesDetail);
+        }
+      });
     });
     return studentsCoursesDetails;
   }

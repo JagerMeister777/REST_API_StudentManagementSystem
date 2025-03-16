@@ -15,6 +15,9 @@ public interface StudentRepository {
   @Select("SELECT * FROM students WHERE id = #{id}")
   Student findByStudentId(int id);
 
+  @Select("SELECT * FROM students WHERE email = #{email}")
+  Student findByEmail(String email);
+
   /**
    * 受講生情報の更新
    * @param student 受講生情報

@@ -18,31 +18,30 @@ public class GlobalExceptionHandler {
    * @return ConflictError
    */
   @ExceptionHandler(DuplicateStudentException.class)
-  public ResponseEntity<Map<String,Object>> handleExistStudent(DuplicateStudentException ex) {
+  public ResponseEntity<Map<String,Object>> DuplicateStudentException(DuplicateStudentException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",409);
-    errorResponse.put("error","Conflict");
+    errorResponse.put("status",400);
+    errorResponse.put("error","Bad Request");
     errorResponse.put("message",ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
-
-    return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
 
   /**
    * 登録するコースを既に受講しているときのエラーハンドリング
-   * @param ex StudentsCoursesCombinationException
+   * @param ex InvalidStudentCourseCombinationException
    * @return ConflictError
    */
-  @ExceptionHandler(StudentsCoursesCombinationException.class)
-  public ResponseEntity<Map<String,Object>> handleStudentsCoursesCombinationException(StudentsCoursesCombinationException ex) {
+  @ExceptionHandler(InvalidStudentCourseCombinationException.class)
+  public ResponseEntity<Map<String,Object>> invalidStudentCourseCombinationException(
+      InvalidStudentCourseCombinationException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",409);
-    errorResponse.put("error","Conflict");
+    errorResponse.put("status",400);
+    errorResponse.put("error","Bad Request");
     errorResponse.put("message",ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
-
-    return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -57,7 +56,6 @@ public class GlobalExceptionHandler {
     errorResponse.put("error","Not Found Student");
     errorResponse.put("message",ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
-
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
