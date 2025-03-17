@@ -1,11 +1,15 @@
 package raisetech.rest.api.studentManagement.data;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class StudentsCourses {
 
   private int id;
@@ -14,7 +18,6 @@ public class StudentsCourses {
   private LocalDateTime courseStartDate;
   private LocalDateTime courseEndDate;
 
-  // 新規登録用コンストラクタ
   public StudentsCourses(int studentId, int courseId, LocalDateTime courseStartDate,
       LocalDateTime courseEndDate) {
     this.studentId = studentId;
@@ -23,7 +26,6 @@ public class StudentsCourses {
     this.courseEndDate = courseEndDate;
   }
 
-  // データ取得用コンストラクタ
   public StudentsCourses(int id, int studentId, int courseId, LocalDateTime courseStartDate,
       LocalDateTime courseEndDate) {
     this.id = id;
