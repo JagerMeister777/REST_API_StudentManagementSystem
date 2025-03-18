@@ -16,8 +16,12 @@ public class CourseService {
     this.courseRepository = courseRepository;
   }
 
-  public Course getOneCourse(int id) {
+  public Course findById(int id) {
     return courseRepository.findByCourseId(id);
+  }
+
+  public Course findByCourseName(String courseName) {
+    return courseRepository.findByCourseName(courseName);
   }
 
   public List<Course> getAllCourses() {

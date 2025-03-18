@@ -5,23 +5,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
+import raisetech.rest.api.studentManagement.service.StudentManagementFacade;
 import raisetech.rest.api.studentManagement.service.StudentService;
+
+
 
 @RestController
 @RequestMapping("/api")
 public class StudentController {
 
-  private final StudentService studentService;
+  private final StudentManagementFacade facade;
+  private final StudentService service;
 
   @Autowired
-  public StudentController(StudentService studentService) {
-    this.studentService = studentService;
+  public StudentController(StudentManagementFacade facade, StudentService service) {
+    this.facade = facade;
+    this.service = service;
   }
 
   /**
@@ -31,7 +37,12 @@ public class StudentController {
    */
   @GetMapping("/students")
   public ResponseEntity<List<StudentWithCoursesDTO>> getAllStudents() {
-    return ResponseEntity.ok(studentService.getAllStudents());
+    return ResponseEntity.ok(facade.getAllStudents());
+  }
+
+  @PostMapping("/student")
+  public ResponseEntity<StudentWithCoursesDTO> registerStudentWithCoursesDTO(@RequestBody StudentWithCoursesDTO registerStudentWithCoursesDTO) {
+    return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDTO));
   }
 
   /**
@@ -41,11 +52,11 @@ public class StudentController {
    */
   @GetMapping("/student/{id}")
   public ResponseEntity<StudentWithCoursesDTO> getOneStudent(@PathVariable int id) {
-    return ResponseEntity.ok(studentService.getOneStudent(id));
+    return ResponseEntity.ok(facade.getOneStudent(id));
   }
 
   @PutMapping("/student/{id}")
   public ResponseEntity<Student> updateStudent(@PathVariable int id,@RequestBody Student updateStudent) {
-    return ResponseEntity.ok(studentService.updateStudent(id,updateStudent));
+    return ResponseEntity.ok(service.updateStudent(id,updateStudent));
   }
 }

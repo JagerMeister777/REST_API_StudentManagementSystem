@@ -33,9 +33,9 @@ public class GlobalExceptionHandler {
    * @param ex InvalidStudentCourseCombinationException
    * @return ConflictError
    */
-  @ExceptionHandler(InvalidStudentCourseCombinationException.class)
+  @ExceptionHandler(InvalidStudentCoursesCombinationException.class)
   public ResponseEntity<Map<String,Object>> invalidStudentCourseCombinationException(
-      InvalidStudentCourseCombinationException ex) {
+      InvalidStudentCoursesCombinationException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
     errorResponse.put("status",400);
     errorResponse.put("error","Bad Request");

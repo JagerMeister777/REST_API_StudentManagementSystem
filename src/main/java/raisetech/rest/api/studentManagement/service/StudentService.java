@@ -16,18 +16,10 @@ import raisetech.rest.api.studentManagement.repository.StudentRepository;
 public class StudentService {
 
   private final StudentRepository studentRepository;
-  private final StudentsCoursesService studentsCoursesService;
-  private final CourseService courseService;
-  private final StudentsCoursesConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository studentRepository,
-      StudentsCoursesService studentsCoursesService, CourseService courseService,
-      StudentsCoursesConverter converter) {
+  public StudentService(StudentRepository studentRepository) {
     this.studentRepository = studentRepository;
-    this.studentsCoursesService = studentsCoursesService;
-    this.courseService = courseService;
-    this.converter = converter;
   }
 
   /**
@@ -35,44 +27,34 @@ public class StudentService {
    *
    * @return 受講生情報のリスト
    */
-  public List<StudentWithCoursesDTO> getAllStudents() {
-    List<Student> studentList = studentRepository.getAllStudents();
-    List<StudentWithCoursesDTO> studentWithCoursesDTOS = new ArrayList<>();
-    studentList.forEach(student -> {
-      List<StudentsCourses> studentsCoursesList = studentsCoursesService.getOneStudentsCoursesList(
-          student.getId());
-      studentWithCoursesDTOS.add(
-          converter.convertStudentWithCoursesDTO(student, studentsCoursesList,
-              courseService.getAllCourses()));
-    });
-    return studentWithCoursesDTOS;
+  public List<Student> getAllStudents() {
+    return studentRepository.getAllStudents();
   }
 
-  /**
-   * 特定の受講生情報の取得
-   *
-   * @param id 受講生ID
-   * @return 受講生情報
-   */
-  public StudentWithCoursesDTO getOneStudent(int id) {
-    Student student = studentRepository.findByStudentId(id);
-    if (student == null) {
-      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
-    }
-    return new StudentWithCoursesDTO(
-        student,
-        converter.convertStudentsCoursesDetail(
-            studentsCoursesService.getOneStudentsCoursesList(id),
-        student.getFullName(),
-        courseService.getAllCourses()));
+  public Student findByStudentId(int id) {
+    return studentRepository.findByStudentId(id);
   }
 
   public Student updateStudent(int id, Student updateStudent) {
-    Student existEmailStudent = studentRepository.findByEmail(updateStudent.getEmail());
-    if (existEmailStudent != null && updateStudent.getId() != existEmailStudent.getId()) {
-      throw new DuplicateStudentException("既にメールアドレスが使用されています。");
-    }
+    validateDuplicateEmail(updateStudent.getEmail(), id);
     studentRepository.updateStudent(id, updateStudent);
     return updateStudent;
+  }
+
+  public int registerStudent(Student registerStudent) {
+    validateDuplicateEmail(registerStudent.getEmail(), null);
+    studentRepository.registerStudent(registerStudent);
+    return findByEmail(registerStudent.getEmail()).getId();
+  }
+
+  public Student findByEmail(String email) {
+    return studentRepository.findByEmail(email);
+  }
+
+  private void validateDuplicateEmail(String email, Integer studentId) {
+    Student existEmailStudent = findByEmail(email);
+    if (existEmailStudent != null && (studentId == null || !(existEmailStudent.getId() == studentId))) {
+      throw new DuplicateStudentException("既にメールアドレスが使用されています。");
+    }
   }
 }

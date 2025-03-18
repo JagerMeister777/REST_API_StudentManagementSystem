@@ -1,6 +1,7 @@
 package raisetech.rest.api.studentManagement.repository;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -17,6 +18,13 @@ public interface StudentRepository {
 
   @Select("SELECT * FROM students WHERE email = #{email}")
   Student findByEmail(String email);
+
+  /**
+   * 受講生情報の登録
+   * @param student 受講生情報
+   */
+  @Insert("INSERT INTO students (full_name, furigana, nick_name, email, living_area, age, gender, remark, isDeleted) VALUES (#{fullName}, #{furigana}, #{nickName}, #{email}, #{livingArea}, #{age}, #{gender}, #{remark}, #{isDeleted});")
+  void registerStudent(Student student);
 
   /**
    * 受講生情報の更新
