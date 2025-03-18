@@ -62,12 +62,11 @@ public class StudentManagementFacade {
     if (student == null) {
       throw new StudentNotFoundException("受講生情報が存在しませんでした。");
     }
-    return new StudentWithCoursesDTO(
-        student,
-        converter.convertStudentsCoursesDetail(
+    return converter.convertStudentWithCoursesDTO(
+            student,
             studentsCoursesService.getOneStudentsCoursesList(id),
-            student.getFullName(),
-            courseService.getAllCourses()));
+            courseService.getAllCourses()
+    );
   }
 
   /**
