@@ -84,6 +84,12 @@ public class StudentManagementFacade {
     return getOneStudent(studentId);
   }
 
+  /**
+   * 受講生情報と受講生コース情報の更新処理をハンドリングします。
+   * @param id 受講生ID
+   * @param updateStudentWithCoursesDTO　受講生情報と受講生コース情報がバインドされたDTO
+   * @return 更新した受講生情報と受講生コース情報
+   */
   @Transactional
   public StudentWithCoursesDTO updateHandling(int id, StudentWithCoursesDTO updateStudentWithCoursesDTO) {
     studentService.updateStudent(id, updateStudentWithCoursesDTO.getStudent());
