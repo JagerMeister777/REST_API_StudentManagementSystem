@@ -11,6 +11,10 @@ import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
+/**
+ * 各サービスを統括して管理するためのサービスです。
+ * 循環依存防止のために実装しました。
+ */
 @Service
 public class StudentManagementFacade {
 
@@ -30,7 +34,7 @@ public class StudentManagementFacade {
   }
 
   /**
-   * 受講生の全件取得
+   * 受講生情報の全件取得をします。
    *
    * @return 受講生情報のリスト
    */
@@ -48,7 +52,7 @@ public class StudentManagementFacade {
   }
 
   /**
-   * 特定の受講生情報の取得
+   * 特定の受講生情報の取得をします。
    *
    * @param id 受講生ID
    * @return 受講生情報
@@ -66,6 +70,11 @@ public class StudentManagementFacade {
             courseService.getAllCourses()));
   }
 
+  /**
+   * 受講生情報と受講生コース情報の登録処理をハンドリングします。
+   * @param registerStudentWithCoursesDTO 受講生情報と受講生コース情報がバインドされたDTO
+   * @return 登録した受講生情報と受講生コース情報
+   */
   @Transactional
   public StudentWithCoursesDTO registerHandling(StudentWithCoursesDTO registerStudentWithCoursesDTO) {
     int studentId = studentService.registerStudent(registerStudentWithCoursesDTO.getStudent());

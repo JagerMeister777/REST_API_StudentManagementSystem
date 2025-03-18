@@ -31,7 +31,7 @@ public class StudentController {
   }
 
   /**
-   * 受講生情報の全件取得
+   * 登録されているすべての受講生情報を返します。
    *
    * @return 受講生情報のリスト
    */
@@ -40,13 +40,18 @@ public class StudentController {
     return ResponseEntity.ok(facade.getAllStudents());
   }
 
+  /**
+   * 受講生情報と受講生コース情報の登録処理を受け取ります。
+   * @param registerStudentWithCoursesDTO 受講生情報と受講生コース情報がバインドされたDTO
+   * @return 登録した受講生情報と受講生コース情報
+   */
   @PostMapping("/student")
   public ResponseEntity<StudentWithCoursesDTO> registerStudentWithCoursesDTO(@RequestBody StudentWithCoursesDTO registerStudentWithCoursesDTO) {
     return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDTO));
   }
 
   /**
-   * 特定の受講生情報の取得
+   * 特定の受講生情報を受講生IDで検索して、返します。
    * @param id 受講生ID
    * @return 受講生情報
    */
@@ -55,6 +60,12 @@ public class StudentController {
     return ResponseEntity.ok(facade.getOneStudent(id));
   }
 
+  /**
+   * 特定の受講生情報を更新して、更新結果を返します。
+   * @param id 受講生ID
+   * @param updateStudent 更新する受講生情報
+   * @return 更新した受講生情報
+   */
   @PutMapping("/student/{id}")
   public ResponseEntity<Student> updateStudent(@PathVariable int id,@RequestBody Student updateStudent) {
     return ResponseEntity.ok(service.updateStudent(id,updateStudent));

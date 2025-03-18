@@ -20,8 +20,11 @@ import raisetech.rest.api.studentManagement.service.StudentsCoursesService;
 public class StudentsCoursesConverter {
 
   /**
-   * 受講生情報と受講生コース情報を組み合わせるコンバーター
-   * @return 全件受講生情報(List型のStudentWithCoursesDTO)
+   * 受講生情報と受講生コース情報を組み合わせます。
+   * @param student 受講生情報
+   * @param studentsCoursesList 受講生コース情報
+   * @param courseList 登録されているすべてのコース情報のリスト
+   * @return StudentWithCoursesDTO型の受講生情報
    */
   public StudentWithCoursesDTO convertStudentWithCoursesDTO(Student student,List<StudentsCourses> studentsCoursesList,List<Course> courseList) {
     return new StudentWithCoursesDTO(
@@ -34,6 +37,13 @@ public class StudentsCoursesConverter {
     );
   }
 
+  /**
+   * 受講生コース情報のstudentIdとcourseIdを見やすい形式で変換します。
+   * @param studentsCoursesList 受講生コース情報リスト
+   * @param studentFullName 受講生のフルネーム
+   * @param courseList 全件コースリスト
+   * @return StudentsCoursesDetail型で変換されたリスト
+   */
   public List<StudentsCoursesDetail> convertStudentsCoursesDetail(List<StudentsCourses> studentsCoursesList,String studentFullName,List<Course> courseList) {
     List<StudentsCoursesDetail> studentsCoursesDetails = new ArrayList<>();
     studentsCoursesList.forEach(studentsCourses -> {

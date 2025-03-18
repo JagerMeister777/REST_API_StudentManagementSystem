@@ -8,12 +8,18 @@ import raisetech.rest.api.studentManagement.data.Course;
 @Mapper
 public interface CourseRepository {
 
+  /**
+   * 登録しているすべてのコース情報を取得します。
+   * @return コース情報の全件リスト
+   */
   @Select("SELECT * FROM courses")
   List<Course> getAllCourse();
 
-  @Select("SELECT * FROM courses WHERE id = #{id}")
-  Course findByCourseId(int id);
-
+  /**
+   * 特定のコース情報をコース名で検索します。
+   * @param name コース名
+   * @return コース情報
+   */
   @Select("SELECT * FROM courses WHERE name = #{name}")
   Course findByCourseName(String name);
 }

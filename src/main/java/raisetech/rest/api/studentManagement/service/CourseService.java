@@ -16,14 +16,19 @@ public class CourseService {
     this.courseRepository = courseRepository;
   }
 
-  public Course findById(int id) {
-    return courseRepository.findByCourseId(id);
-  }
-
+  /**
+   * コース名でコース情報を検索します。
+   * @param courseName コース名
+   * @return コース情報
+   */
   public Course findByCourseName(String courseName) {
     return courseRepository.findByCourseName(courseName);
   }
 
+  /**
+   * 登録しているコース情報を全件取得します。
+   * @return すべてのコース情報リスト
+   */
   public List<Course> getAllCourses() {
     return courseRepository.getAllCourse();
   }

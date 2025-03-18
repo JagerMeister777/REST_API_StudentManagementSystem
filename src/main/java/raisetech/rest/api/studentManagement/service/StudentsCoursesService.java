@@ -35,6 +35,11 @@ public class StudentsCoursesService {
     return studentsCoursesRepository.findByStudentId(id);
   }
 
+  /**
+   * 受講生コース情報の登録を行います。
+   * @param registerStudentsCoursesDetailList 登録する受講生コース情報
+   * @param email 登録する受講生を特定するためのメールアドレス
+   */
   public void registerStudentsCourses(List<StudentsCoursesDetail> registerStudentsCoursesDetailList,
       String email) {
     registerStudentsCoursesDetailList.forEach(studentsCoursesDetail -> {
