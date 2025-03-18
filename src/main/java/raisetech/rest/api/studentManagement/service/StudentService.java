@@ -42,11 +42,7 @@ public class StudentService {
    * @return 受講生情報
    */
   public Student findByEmail(String email) {
-    Student existStudent = studentRepository.findByEmail(email);
-    if (existStudent == null) {
-      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
-    }
-    return existStudent;
+    return studentRepository.findByEmail(email);
   }
 
   /**
@@ -66,7 +62,7 @@ public class StudentService {
    * @return 登録した受講生情報
    */
   public int registerStudent(Student registerStudent) {
-    validateDuplicateEmail(registerStudent.getEmail(), null);
+    validateDuplicateEmail(registerStudent.getEmail(),null);
     studentRepository.registerStudent(registerStudent);
     return findByEmail(registerStudent.getEmail()).getId();
   }
@@ -79,7 +75,8 @@ public class StudentService {
    */
   private void validateDuplicateEmail(String email, Integer studentId) {
     Student existEmailStudent = findByEmail(email);
-    if (existEmailStudent != null && (studentId == null || !(existEmailStudent.getId() == studentId))) {
+    if (existEmailStudent != null && (studentId == null || !(existEmailStudent.getId()
+        == studentId))) {
       throw new DuplicateStudentException("既にメールアドレスが使用されています。");
     }
   }
