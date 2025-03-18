@@ -60,6 +60,21 @@ public class GlobalExceptionHandler {
   }
 
   /**
+   * コース情報が見つからなかった時のエラーハンドリング
+   * @param ex CourseNotFoundException
+   * @return NotFoundError
+   */
+  @ExceptionHandler(CourseNotFoundException.class)
+  public ResponseEntity<Map<String,Object>> handleCourseNotFound(CourseNotFoundException ex) {
+    Map<String,Object> errorResponse = new HashMap<>();
+    errorResponse.put("status",404);
+    errorResponse.put("error","Not Found Student");
+    errorResponse.put("message",ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  /**
    * timestampのフォーマット
    * @return yyyy-MM-dd HH:mm:ss形式の時刻
    */

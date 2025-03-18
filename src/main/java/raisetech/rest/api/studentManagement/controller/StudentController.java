@@ -63,11 +63,11 @@ public class StudentController {
   /**
    * 特定の受講生情報を更新して、更新結果を返します。
    * @param id 受講生ID
-   * @param updateStudent 更新する受講生情報
+   * @param studentWithCoursesDTO 更新する受講生情報
    * @return 更新した受講生情報
    */
   @PutMapping("/student/{id}")
-  public ResponseEntity<Student> updateStudent(@PathVariable int id,@RequestBody Student updateStudent) {
-    return ResponseEntity.ok(service.updateStudent(id,updateStudent));
+  public ResponseEntity<StudentWithCoursesDTO> updateStudent(@PathVariable int id,@RequestBody StudentWithCoursesDTO studentWithCoursesDTO) {
+    return ResponseEntity.ok(facade.updateHandling(id,studentWithCoursesDTO));
   }
 }

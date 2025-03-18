@@ -83,4 +83,21 @@ public class StudentManagementFacade {
     );
     return getOneStudent(studentId);
   }
+
+  @Transactional
+  public StudentWithCoursesDTO updateHandling(int id, StudentWithCoursesDTO updateStudentWithCoursesDTO) {
+    studentService.updateStudent(id, updateStudentWithCoursesDTO.getStudent());
+    List<StudentsCourses> updateStudentsCoursesList = new ArrayList<>();
+    updateStudentWithCoursesDTO.getStudentsCourses().forEach(studentsCoursesDetail -> {
+      StudentsCourses studentsCourses = new StudentsCourses(
+          id,
+          courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId(),
+          studentsCoursesDetail.getCourseStartDate(),
+          studentsCoursesDetail.getCourseEndDate()
+      );
+      updateStudentsCoursesList.add(studentsCourses);
+    });
+    studentsCoursesService.updateStudentsCourses(updateStudentsCoursesList);
+    return updateStudentWithCoursesDTO;
+  }
 }

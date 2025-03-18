@@ -58,5 +58,14 @@ public class StudentsCoursesService {
       studentsCoursesRepository.registerStudentsCourses(registerStudentsCourses);
     });
   }
+
+  /**
+   * 受講生コース情報の更新を行います。
+   *
+   * @param studentsCoursesList 更新する受講生コース情報
+   */
+  public void updateStudentsCourses(List<StudentsCourses> studentsCoursesList) {
+    studentsCoursesList.forEach(studentsCoursesRepository::updateStudentsCourses);
+  }
 }
 

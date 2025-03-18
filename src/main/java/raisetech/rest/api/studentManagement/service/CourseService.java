@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.rest.api.studentManagement.data.Course;
+import raisetech.rest.api.studentManagement.exception.CourseNotFoundException;
 import raisetech.rest.api.studentManagement.repository.CourseRepository;
 
 @Service
@@ -22,7 +23,11 @@ public class CourseService {
    * @return コース情報
    */
   public Course findByCourseName(String courseName) {
-    return courseRepository.findByCourseName(courseName);
+    Course course = courseRepository.findByCourseName(courseName);
+    if (course == null) {
+      throw new CourseNotFoundException("コース情報が存在しませんでした。");
+    }
+    return course;
   }
 
   /**

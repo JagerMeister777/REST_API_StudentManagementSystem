@@ -1,13 +1,9 @@
 package raisetech.rest.api.studentManagement.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
-import raisetech.rest.api.studentManagement.data.StudentsCourses;
-import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.exception.DuplicateStudentException;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 import raisetech.rest.api.studentManagement.repository.StudentRepository;
@@ -46,19 +42,22 @@ public class StudentService {
    * @return 受講生情報
    */
   public Student findByEmail(String email) {
-    return studentRepository.findByEmail(email);
+    Student existStudent = studentRepository.findByEmail(email);
+    if (existStudent == null) {
+      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
+    }
+    return existStudent;
   }
 
   /**
    * 受講生情報の更新をします。
+   *
    * @param id 受講生ID
    * @param updateStudent 更新する受講生情報
-   * @return 更新した受講生情報
    */
-  public Student updateStudent(int id, Student updateStudent) {
+  public void updateStudent(int id, Student updateStudent) {
     validateDuplicateEmail(updateStudent.getEmail(), id);
     studentRepository.updateStudent(id, updateStudent);
-    return updateStudent;
   }
 
   /**
