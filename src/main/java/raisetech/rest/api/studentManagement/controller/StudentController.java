@@ -12,21 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
 import raisetech.rest.api.studentManagement.service.StudentManagementFacade;
-import raisetech.rest.api.studentManagement.service.StudentService;
-
-
 
 @RestController
 @RequestMapping("/api")
 public class StudentController {
 
   private final StudentManagementFacade facade;
-  private final StudentService service;
 
   @Autowired
-  public StudentController(StudentManagementFacade facade, StudentService service) {
+  public StudentController(StudentManagementFacade facade) {
     this.facade = facade;
-    this.service = service;
   }
 
   /**

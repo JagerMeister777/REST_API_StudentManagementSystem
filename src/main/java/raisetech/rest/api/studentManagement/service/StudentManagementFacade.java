@@ -9,7 +9,6 @@ import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
-import raisetech.rest.api.studentManagement.exception.InvalidStudentCoursesCombinationException;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
 /**

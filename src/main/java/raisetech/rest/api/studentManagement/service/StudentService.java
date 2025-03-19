@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.exception.DuplicateStudentException;
-import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 import raisetech.rest.api.studentManagement.repository.StudentRepository;
 
 @Service

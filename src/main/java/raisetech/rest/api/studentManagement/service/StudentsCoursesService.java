@@ -1,10 +1,8 @@
 package raisetech.rest.api.studentManagement.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
 import raisetech.rest.api.studentManagement.exception.InvalidStudentCoursesCombinationException;
