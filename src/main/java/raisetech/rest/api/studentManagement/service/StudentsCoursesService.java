@@ -44,7 +44,7 @@ public class StudentsCoursesService {
       String email) {
     registerStudentsCoursesDetailList.forEach(studentsCoursesDetail -> {
       int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();
-      int studentId = studentService.findByEmail(email).getId();
+      int studentId = studentService.findByEmail(email).get().getId();
       StudentsCourses existStudentCourses = studentsCoursesRepository.isExistingCombination(studentId, courseId);
       if (existStudentCourses != null) {
         throw new InvalidStudentCoursesCombinationException("既に登録するコースを受講しています。");

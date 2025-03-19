@@ -1,6 +1,7 @@
 package raisetech.rest.api.studentManagement.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -31,7 +32,7 @@ public interface StudentRepository {
    * @return 受講生情報
    */
   @Select("SELECT * FROM students WHERE email = #{email}")
-  Student findByEmail(String email);
+  Optional<Student> findByEmail(String email);
 
   /**
    * 受講生情報の登録をします。

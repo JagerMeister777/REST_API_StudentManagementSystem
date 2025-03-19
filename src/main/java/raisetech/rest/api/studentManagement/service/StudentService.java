@@ -1,6 +1,7 @@
 package raisetech.rest.api.studentManagement.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.rest.api.studentManagement.data.Student;
@@ -41,7 +42,7 @@ public class StudentService {
    * @param email メールアドレス
    * @return 受講生情報
    */
-  public Student findByEmail(String email) {
+  public Optional<Student> findByEmail(String email) {
     return studentRepository.findByEmail(email);
   }
 
@@ -64,7 +65,7 @@ public class StudentService {
   public int registerStudent(Student registerStudent) {
     validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
     studentRepository.registerStudent(registerStudent);
-    return findByEmail(registerStudent.getEmail()).getId();
+    return findByEmail(registerStudent.getEmail()).get().getId();
   }
 
   /**
@@ -74,9 +75,11 @@ public class StudentService {
    * @param studentId 受講生ID
    */
   private void validateDuplicateEmail(String email, int studentId) {
-    Student existEmailStudent = findByEmail(email);
-    if (existEmailStudent.getId() != studentId) {
-      throw new DuplicateStudentException("既にメールアドレスが使用されています。");
+    Optional<Student> existEmailStudent = findByEmail(email);
+    if (existEmailStudent.isPresent()) {
+      if (existEmailStudent.get().getId() != studentId) {
+        throw new DuplicateStudentException("既にメールアドレスが使用されています。");
+      }
     }
   }
 }
