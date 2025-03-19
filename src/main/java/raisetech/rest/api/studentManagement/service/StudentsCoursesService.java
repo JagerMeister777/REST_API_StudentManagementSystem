@@ -45,10 +45,6 @@ public class StudentsCoursesService {
     registerStudentsCoursesDetailList.forEach(studentsCoursesDetail -> {
       int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();
       int studentId = studentService.findByEmail(email).get().getId();
-      StudentsCourses existStudentCourses = studentsCoursesRepository.isExistingCombination(studentId, courseId);
-      if (existStudentCourses != null) {
-        throw new InvalidStudentCoursesCombinationException("既に登録するコースを受講しています。");
-      }
       StudentsCourses registerStudentsCourses = new StudentsCourses(
           studentId,
           courseId,
@@ -66,6 +62,13 @@ public class StudentsCoursesService {
    */
   public void updateStudentsCourses(List<StudentsCourses> studentsCoursesList) {
     studentsCoursesList.forEach(studentsCoursesRepository::updateStudentsCourses);
+  }
+
+  // TODO 受講生コース情報の単品登録の時に使えるメソッドまだ使わない
+  public void isExistingCombination(int studentId, int courseId) {
+    if (studentsCoursesRepository.isExistingCombination(studentId, courseId).isPresent()) {
+      throw new InvalidStudentCoursesCombinationException("既に登録するコースを受講しています。");
+    }
   }
 }
 

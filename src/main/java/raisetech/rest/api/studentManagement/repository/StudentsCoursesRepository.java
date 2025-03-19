@@ -1,6 +1,7 @@
 package raisetech.rest.api.studentManagement.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -24,7 +25,7 @@ public interface StudentsCoursesRepository {
    * @return 受講生コース情報を返し、存在しなければNullを返します。
    */
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId} AND course_id = #{courseId}")
-  StudentsCourses isExistingCombination(int studentId, int courseId);
+  Optional<StudentsCourses> isExistingCombination(int studentId, int courseId);
 
   /**
    * 受講生コース情報の登録をします。

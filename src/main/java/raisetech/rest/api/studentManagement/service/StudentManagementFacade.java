@@ -9,6 +9,7 @@ import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
+import raisetech.rest.api.studentManagement.exception.InvalidStudentCoursesCombinationException;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
 /**
@@ -95,9 +96,10 @@ public class StudentManagementFacade {
     studentService.updateStudent(id, updateStudentWithCoursesDto.getStudent());
     List<StudentsCourses> updateStudentsCoursesList = new ArrayList<>();
     updateStudentWithCoursesDto.getStudentsCourses().forEach(studentsCoursesDetail -> {
+      int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();
       StudentsCourses studentsCourses = new StudentsCourses(
           id,
-          courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId(),
+          courseId,
           studentsCoursesDetail.getCourseStartDate(),
           studentsCoursesDetail.getCourseEndDate()
       );
