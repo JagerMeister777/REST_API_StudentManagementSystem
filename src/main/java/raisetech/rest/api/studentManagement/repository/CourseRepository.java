@@ -1,6 +1,7 @@
 package raisetech.rest.api.studentManagement.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import raisetech.rest.api.studentManagement.data.Course;
@@ -21,5 +22,5 @@ public interface CourseRepository {
    * @return コース情報
    */
   @Select("SELECT * FROM courses WHERE name = #{name}")
-  Course findByCourseName(String name);
+  Optional<Course> findByCourseName(String name);
 }

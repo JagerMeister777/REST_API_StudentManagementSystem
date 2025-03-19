@@ -23,11 +23,8 @@ public class CourseService {
    * @return コース情報
    */
   public Course findByCourseName(String courseName) {
-    Course course = courseRepository.findByCourseName(courseName);
-    if (course == null) {
-      throw new CourseNotFoundException("コース情報が存在しませんでした。");
-    }
-    return course;
+    return courseRepository.findByCourseName(courseName)
+        .orElseThrow(() -> new CourseNotFoundException("コース情報が存在しませんでした。"));
   }
 
   /**
