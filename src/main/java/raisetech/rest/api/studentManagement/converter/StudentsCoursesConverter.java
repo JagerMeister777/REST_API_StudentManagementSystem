@@ -26,7 +26,6 @@ public class StudentsCoursesConverter {
       courseList.forEach(course -> {
         if (course.getId() == studentsCourses.getCourseId()) {
           StudentsCoursesDetail studentsCoursesDetail = new StudentsCoursesDetail(
-              student.getFullName(),
               course.getName(),
               studentsCourses.getCourseStartDate(),
               studentsCourses.getCourseEndDate()

@@ -8,14 +8,12 @@ import lombok.Setter;
 @Setter
 public class StudentsCoursesDetail {
 
-  private String studentName;
   private String courseName;
   private LocalDateTime courseStartDate;
   private LocalDateTime courseEndDate;
 
-  public StudentsCoursesDetail(String studentName, String courseName,
+  public StudentsCoursesDetail(String courseName,
       LocalDateTime courseStartDate, LocalDateTime courseEndDate) {
-    this.studentName = studentName;
     this.courseName = courseName;
     this.courseStartDate = courseStartDate;
     this.courseEndDate = courseEndDate;
