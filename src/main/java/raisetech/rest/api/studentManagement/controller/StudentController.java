@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.rest.api.studentManagement.data.Student;
-import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
+import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
 import raisetech.rest.api.studentManagement.service.StudentManagementFacade;
 import raisetech.rest.api.studentManagement.service.StudentService;
 
@@ -36,18 +35,18 @@ public class StudentController {
    * @return 受講生情報のリスト
    */
   @GetMapping("/students")
-  public ResponseEntity<List<StudentWithCoursesDTO>> getAllStudents() {
+  public ResponseEntity<List<StudentWithCoursesDto>> getAllStudents() {
     return ResponseEntity.ok(facade.getAllStudents());
   }
 
   /**
    * 受講生情報と受講生コース情報の登録処理を受け取ります。
-   * @param registerStudentWithCoursesDTO 受講生情報と受講生コース情報がバインドされたDTO
+   * @param registerStudentWithCoursesDto 受講生情報と受講生コース情報がバインドされたDTO
    * @return 登録した受講生情報と受講生コース情報
    */
   @PostMapping("/student")
-  public ResponseEntity<StudentWithCoursesDTO> registerStudentWithCoursesDTO(@RequestBody StudentWithCoursesDTO registerStudentWithCoursesDTO) {
-    return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDTO));
+  public ResponseEntity<StudentWithCoursesDto> registerStudentWithCoursesDTO(@RequestBody StudentWithCoursesDto registerStudentWithCoursesDto) {
+    return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDto));
   }
 
   /**
@@ -56,7 +55,7 @@ public class StudentController {
    * @return 受講生情報
    */
   @GetMapping("/student/{id}")
-  public ResponseEntity<StudentWithCoursesDTO> getOneStudent(@PathVariable int id) {
+  public ResponseEntity<StudentWithCoursesDto> getOneStudent(@PathVariable int id) {
     return ResponseEntity.ok(facade.getOneStudent(id));
   }
 
@@ -67,7 +66,7 @@ public class StudentController {
    * @return 更新した受講生情報
    */
   @PutMapping("/student/{id}")
-  public ResponseEntity<StudentWithCoursesDTO> updateStudent(@PathVariable int id,@RequestBody StudentWithCoursesDTO studentWithCoursesDTO) {
+  public ResponseEntity<StudentWithCoursesDto> updateStudent(@PathVariable int id,@RequestBody StudentWithCoursesDto studentWithCoursesDTO) {
     return ResponseEntity.ok(facade.updateHandling(id,studentWithCoursesDTO));
   }
 }

@@ -2,19 +2,12 @@ package raisetech.rest.api.studentManagement.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import raisetech.rest.api.studentManagement.data.Course;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
-import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
+import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
 import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
-import raisetech.rest.api.studentManagement.repository.CourseRepository;
-import raisetech.rest.api.studentManagement.repository.StudentRepository;
-import raisetech.rest.api.studentManagement.repository.StudentsCoursesRepository;
-import raisetech.rest.api.studentManagement.service.CourseService;
-import raisetech.rest.api.studentManagement.service.StudentService;
-import raisetech.rest.api.studentManagement.service.StudentsCoursesService;
 
 @Component
 public class StudentsCoursesConverter {
@@ -27,7 +20,7 @@ public class StudentsCoursesConverter {
    * @param courseList          登録されているすべてのコース情報のリスト
    * @return StudentWithCoursesDTO型の受講生情報
    */
-  public StudentWithCoursesDTO convertStudentWithCoursesDTO(Student student, List<StudentsCourses> studentsCoursesList, List<Course> courseList) {
+  public StudentWithCoursesDto convertStudentWithCoursesDTO(Student student, List<StudentsCourses> studentsCoursesList, List<Course> courseList) {
     List<StudentsCoursesDetail> studentsCoursesDetailList = new ArrayList<>();
     studentsCoursesList.forEach(studentsCourses -> {
       courseList.forEach(course -> {
@@ -42,6 +35,6 @@ public class StudentsCoursesConverter {
         }
       });
     });
-    return new StudentWithCoursesDTO(student, studentsCoursesDetailList);
+    return new StudentWithCoursesDto(student, studentsCoursesDetailList);
   }
 }
