@@ -62,7 +62,7 @@ public class StudentService {
    * @return 登録した受講生情報
    */
   public int registerStudent(Student registerStudent) {
-    validateDuplicateEmail(registerStudent.getEmail(),null);
+    validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
     studentRepository.registerStudent(registerStudent);
     return findByEmail(registerStudent.getEmail()).getId();
   }
@@ -73,10 +73,9 @@ public class StudentService {
    * @param email メールアドレス
    * @param studentId 受講生ID
    */
-  private void validateDuplicateEmail(String email, Integer studentId) {
+  private void validateDuplicateEmail(String email, int studentId) {
     Student existEmailStudent = findByEmail(email);
-    if (existEmailStudent != null && (studentId == null || !(existEmailStudent.getId()
-        == studentId))) {
+    if (existEmailStudent.getId() != studentId) {
       throw new DuplicateStudentException("既にメールアドレスが使用されています。");
     }
   }
