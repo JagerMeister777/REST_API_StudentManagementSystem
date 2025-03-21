@@ -76,12 +76,12 @@ public class StudentManagementFacade {
    */
   @Transactional
   public StudentWithCoursesDto registerHandling(StudentWithCoursesDto registerStudentWithCoursesDto) {
-    int studentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
+    int registerStudentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
     studentsCoursesService.registerStudentsCourses(
         registerStudentWithCoursesDto.getStudentsCourses(),
-        registerStudentWithCoursesDto.getStudent().getEmail()
+        registerStudentId
     );
-    return getOneStudent(studentId);
+    return getOneStudent(registerStudentId);
   }
 
   /**

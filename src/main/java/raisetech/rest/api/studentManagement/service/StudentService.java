@@ -53,7 +53,7 @@ public class StudentService {
    */
   public void updateStudent(int id, Student updateStudent) {
     validateDuplicateEmail(updateStudent.getEmail(), id);
-    studentRepository.updateStudent(id, updateStudent);
+    studentRepository.updateStudent(updateStudent);
   }
 
   /**
@@ -64,7 +64,7 @@ public class StudentService {
   public int registerStudent(Student registerStudent) {
     validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
     studentRepository.registerStudent(registerStudent);
-    return findByEmail(registerStudent.getEmail()).get().getId();
+    return registerStudent.getId();
   }
 
   /**
