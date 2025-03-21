@@ -33,9 +33,9 @@ public class GlobalExceptionHandler {
    * @param ex InvalidStudentCourseCombinationException
    * @return ConflictError
    */
-  @ExceptionHandler(InvalidStudentCourseCombinationException.class)
+  @ExceptionHandler(InvalidStudentCoursesCombinationException.class)
   public ResponseEntity<Map<String,Object>> invalidStudentCourseCombinationException(
-      InvalidStudentCourseCombinationException ex) {
+      InvalidStudentCoursesCombinationException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
     errorResponse.put("status",400);
     errorResponse.put("error","Bad Request");
@@ -51,6 +51,21 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(StudentNotFoundException.class)
   public ResponseEntity<Map<String,Object>> handleStudentNotFound(StudentNotFoundException ex) {
+    Map<String,Object> errorResponse = new HashMap<>();
+    errorResponse.put("status",404);
+    errorResponse.put("error","Not Found Student");
+    errorResponse.put("message",ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * コース情報が見つからなかった時のエラーハンドリング
+   * @param ex CourseNotFoundException
+   * @return NotFoundError
+   */
+  @ExceptionHandler(CourseNotFoundException.class)
+  public ResponseEntity<Map<String,Object>> handleCourseNotFound(CourseNotFoundException ex) {
     Map<String,Object> errorResponse = new HashMap<>();
     errorResponse.put("status",404);
     errorResponse.put("error","Not Found Student");

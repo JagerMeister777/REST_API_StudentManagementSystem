@@ -1,78 +1,84 @@
 package raisetech.rest.api.studentManagement.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
-import raisetech.rest.api.studentManagement.data.StudentsCourses;
-import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDTO;
 import raisetech.rest.api.studentManagement.exception.DuplicateStudentException;
-import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 import raisetech.rest.api.studentManagement.repository.StudentRepository;
 
 @Service
 public class StudentService {
 
   private final StudentRepository studentRepository;
-  private final StudentsCoursesService studentsCoursesService;
-  private final CourseService courseService;
-  private final StudentsCoursesConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository studentRepository,
-      StudentsCoursesService studentsCoursesService, CourseService courseService,
-      StudentsCoursesConverter converter) {
+  public StudentService(StudentRepository studentRepository) {
     this.studentRepository = studentRepository;
-    this.studentsCoursesService = studentsCoursesService;
-    this.courseService = courseService;
-    this.converter = converter;
   }
 
   /**
-   * 受講生の全件取得
+   * 受講生情報の全件取得をします。
    *
-   * @return 受講生情報のリスト
+   * @return すべての受講生情報リスト
    */
-  public List<StudentWithCoursesDTO> getAllStudents() {
-    List<Student> studentList = studentRepository.getAllStudents();
-    List<StudentWithCoursesDTO> studentWithCoursesDTOS = new ArrayList<>();
-    studentList.forEach(student -> {
-      List<StudentsCourses> studentsCoursesList = studentsCoursesService.getOneStudentsCoursesList(
-          student.getId());
-      studentWithCoursesDTOS.add(
-          converter.convertStudentWithCoursesDTO(student, studentsCoursesList,
-              courseService.getAllCourses()));
-    });
-    return studentWithCoursesDTOS;
+  public List<Student> getAllStudents() {
+    return studentRepository.getAllStudents();
   }
 
   /**
-   * 特定の受講生情報の取得
-   *
+   * 受講生IDで受講生情報を検索をします。
    * @param id 受講生ID
    * @return 受講生情報
    */
-  public StudentWithCoursesDTO getOneStudent(int id) {
-    Student student = studentRepository.findByStudentId(id);
-    if (student == null) {
-      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
-    }
-    return new StudentWithCoursesDTO(
-        student,
-        converter.convertStudentsCoursesDetail(
-            studentsCoursesService.getOneStudentsCoursesList(id),
-        student.getFullName(),
-        courseService.getAllCourses()));
+  public Student findByStudentId(int id) {
+    return studentRepository.findByStudentId(id);
   }
 
-  public Student updateStudent(int id, Student updateStudent) {
-    Student existEmailStudent = studentRepository.findByEmail(updateStudent.getEmail());
-    if (existEmailStudent != null && updateStudent.getId() != existEmailStudent.getId()) {
-      throw new DuplicateStudentException("既にメールアドレスが使用されています。");
-    }
+  /**
+   * 受講生情報をメールアドレスで検索します。
+   * @param email メールアドレス
+   * @return 受講生情報
+   */
+  public Optional<Student> findByEmail(String email) {
+    return studentRepository.findByEmail(email);
+  }
+
+  /**
+   * 受講生情報の更新をします。
+   *
+   * @param id 受講生ID
+   * @param updateStudent 更新する受講生情報
+   */
+  public void updateStudent(int id, Student updateStudent) {
+    validateDuplicateEmail(updateStudent.getEmail(), id);
     studentRepository.updateStudent(id, updateStudent);
-    return updateStudent;
+  }
+
+  /**
+   * 受講生情報の登録をします。
+   * @param registerStudent 登録する受講生情報
+   * @return 登録した受講生情報
+   */
+  public int registerStudent(Student registerStudent) {
+    validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
+    studentRepository.registerStudent(registerStudent);
+    return findByEmail(registerStudent.getEmail()).get().getId();
+  }
+
+  /**
+   * 登録または更新する際に、既に登録されているメールアドレスかどうかチェックします。
+   * 更新の時にexistEmailStudentで見つかった受講生情報が、更新する受講生情報と同じなら、例外は発生しません。
+   * @param email メールアドレス
+   * @param studentId 受講生ID
+   */
+  private void validateDuplicateEmail(String email, int studentId) {
+    Optional<Student> existEmailStudent = findByEmail(email);
+    if (existEmailStudent.isPresent()) {
+      if (existEmailStudent.get().getId() != studentId) {
+        throw new DuplicateStudentException("既にメールアドレスが使用されています。");
+      }
+    }
   }
 }
