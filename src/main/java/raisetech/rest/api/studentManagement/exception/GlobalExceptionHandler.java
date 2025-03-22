@@ -74,6 +74,16 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(IsDeletedStudentException.class)
+  public ResponseEntity<Map<String,Object>> isDeletedStudent(IsDeletedStudentException ex) {
+    Map<String,Object> errorResponse = new HashMap<>();
+    errorResponse.put("status",404);
+    errorResponse.put("error","Not Found Student");
+    errorResponse.put("message",ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
   /**
    * timestampのフォーマット
    * @return yyyy-MM-dd HH:mm:ss形式の時刻

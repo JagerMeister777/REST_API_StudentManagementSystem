@@ -69,6 +69,6 @@ public class StudentController {
   @PatchMapping("/student/{id}")
   public ResponseEntity<String> deleteStudent(@PathVariable int id) {
     facade.deleteStudent(id);
-    return ResponseEntity.ok("受講生情報を削除しました。");
+    return ResponseEntity.ok("受講生情報を削除しました。 ID:" + id);
   }
 }
