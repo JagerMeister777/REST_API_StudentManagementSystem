@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="raisetech.rest.api.studentManagement.repository.CourseRepository">
+  <!-- 登録しているすべてのコース情報を取得します。-->
+  <select id="getAllCourse" resultType="raisetech.rest.api.studentManagement.data.Course">
+    SELECT * FROM courses
+  </select>
+
+  <!-- 特定のコース情報をコース名で検索します。-->
+  <select id="findByCourseName" resultType="raisetech.rest.api.studentManagement.data.Course">
+    SELECT * FROM courses WHERE name = #{name}
+  </select>
+
+</mapper>
