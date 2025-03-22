@@ -3,7 +3,6 @@ package raisetech.rest.api.studentManagement.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
 import raisetech.rest.api.studentManagement.exception.InvalidStudentCoursesCombinationException;
@@ -14,14 +13,12 @@ public class StudentsCoursesService {
 
   private final StudentsCoursesRepository studentsCoursesRepository;
   private final CourseService courseService;
-  private final StudentService studentService;
 
   @Autowired
   public StudentsCoursesService(StudentsCoursesRepository studentsCoursesRepository,
-      CourseService courseService, StudentService studentService) {
+      CourseService courseService) {
     this.studentsCoursesRepository = studentsCoursesRepository;
     this.courseService = courseService;
-    this.studentService = studentService;
   }
 
   /**
