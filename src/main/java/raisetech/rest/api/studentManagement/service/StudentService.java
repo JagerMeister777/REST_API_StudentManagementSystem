@@ -67,6 +67,10 @@ public class StudentService {
     return registerStudent.getId();
   }
 
+  public void deleteStudent(int studentId) {
+    studentRepository.deleteStudent(studentId);
+  }
+
   /**
    * 登録または更新する際に、既に登録されているメールアドレスかどうかチェックします。
    * 更新の時にexistEmailStudentで見つかった受講生情報が、更新する受講生情報と同じなら、例外は発生しません。

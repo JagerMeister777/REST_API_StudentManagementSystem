@@ -107,4 +107,8 @@ public class StudentManagementFacade {
     studentsCoursesService.updateStudentsCourses(updateStudentsCoursesList);
     return updateStudentWithCoursesDto;
   }
+
+  public void deleteStudent(int id) {
+    studentService.deleteStudent(id);
+  }
 }

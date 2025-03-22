@@ -40,4 +40,9 @@ public interface StudentRepository {
    */
   void updateStudent(Student student);
 
+  /**
+   * 受講生情報の論理削除をします
+   * @param id 受講生ID
+   */
+  void deleteStudent(int id);
 }

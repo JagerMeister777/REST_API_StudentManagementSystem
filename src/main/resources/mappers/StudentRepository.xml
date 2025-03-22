@@ -5,7 +5,7 @@
 <mapper namespace="raisetech.rest.api.studentManagement.repository.StudentRepository">
     <!-- 全ての受講生情報を取得します。-->
     <select id="getAllStudents" resultType="raisetech.rest.api.studentManagement.data.Student">
-        SELECT * FROM students
+        SELECT * FROM students WHERE isDeleted = false
     </select>
 
     <!-- 特定の受講生情報をIDで検索して取得します。-->
@@ -39,6 +39,7 @@
         WHERE id = #{id}
     </update>
 
-
-
+    <update id="deleteStudent" parameterType="int">
+        UPDATE students SET isDeleted = true WHERE id = #{id}
+    </update>
 </mapper>
