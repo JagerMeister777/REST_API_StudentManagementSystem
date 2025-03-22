@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="raisetech.rest.api.studentManagement.repository.StudentsCoursesRepository">
+  <!-- 特定の受講生の受講しているコース情報を取得します。-->
+  <select id="findByStudentId" resultType="raisetech.rest.api.studentManagement.data.StudentsCourses">
+    SELECT * FROM students_courses WHERE student_id = #{id}
+  </select>
+
+  <!-- 受講生IDとコースIDの組み合わせが存在するかどうかチェックします。-->
+  <select id="isExistingCombination" resultType="raisetech.rest.api.studentManagement.data.StudentsCourses">
+    SELECT * FROM students_courses WHERE student_id = #{studentId} AND course_id = #{courseId}
+  </select>
+
+  <!-- 受講生コース情報の登録をします。-->
+  <insert id="registerStudentsCourses" parameterType="raisetech.rest.api.studentManagement.data.StudentsCourses" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO students_courses (student_id, course_id, course_start_date, course_end_date)
+    VALUES (#{studentId}, #{courseId}, #{courseStartDate}, #{courseEndDate})
+  </insert>
+
+  <!-- 受講生コース情報の更新をします。-->
+  <update id="updateStudentsCourses" parameterType="raisetech.rest.api.studentManagement.data.StudentsCourses">
+    UPDATE students_courses
+      SET
+        student_id = #{studentId},
+        course_id = #{courseId},
+        course_start_date = #{courseStartDate},
+        course_end_date = #{courseEndDate}
+    WHERE id = #{id}
+  </update>
+
+</mapper>

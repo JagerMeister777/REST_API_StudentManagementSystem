@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.exception.DuplicateStudentException;
+import raisetech.rest.api.studentManagement.exception.IsDeletedStudentException;
 import raisetech.rest.api.studentManagement.repository.StudentRepository;
 
 @Service
@@ -53,7 +54,7 @@ public class StudentService {
    */
   public void updateStudent(int id, Student updateStudent) {
     validateDuplicateEmail(updateStudent.getEmail(), id);
-    studentRepository.updateStudent(id, updateStudent);
+    studentRepository.updateStudent(updateStudent);
   }
 
   /**
@@ -64,7 +65,11 @@ public class StudentService {
   public int registerStudent(Student registerStudent) {
     validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
     studentRepository.registerStudent(registerStudent);
-    return findByEmail(registerStudent.getEmail()).get().getId();
+    return registerStudent.getId();
+  }
+
+  public void deleteStudent(int studentId) {
+    studentRepository.deleteStudent(studentId);
   }
 
   /**

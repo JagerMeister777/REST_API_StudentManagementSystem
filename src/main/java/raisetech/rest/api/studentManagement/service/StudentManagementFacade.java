@@ -9,6 +9,7 @@ import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
+import raisetech.rest.api.studentManagement.exception.IsDeletedStudentException;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
 /**
@@ -61,6 +62,8 @@ public class StudentManagementFacade {
     Student student = studentService.findByStudentId(id);
     if (student == null) {
       throw new StudentNotFoundException("受講生情報が存在しませんでした。");
+    } else if (student.isDeleted()) {
+      throw new IsDeletedStudentException("受講生情報が削除されています。");
     }
     return converter.convertStudentWithCoursesDTO(
             student,
@@ -76,12 +79,12 @@ public class StudentManagementFacade {
    */
   @Transactional
   public StudentWithCoursesDto registerHandling(StudentWithCoursesDto registerStudentWithCoursesDto) {
-    int studentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
+    int registerStudentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
     studentsCoursesService.registerStudentsCourses(
         registerStudentWithCoursesDto.getStudentsCourses(),
-        registerStudentWithCoursesDto.getStudent().getEmail()
+        registerStudentId
     );
-    return getOneStudent(studentId);
+    return getOneStudent(registerStudentId);
   }
 
   /**
@@ -106,5 +109,9 @@ public class StudentManagementFacade {
     });
     studentsCoursesService.updateStudentsCourses(updateStudentsCoursesList);
     return updateStudentWithCoursesDto;
+  }
+
+  public void deleteStudent(int id) {
+    studentService.deleteStudent(id);
   }
 }

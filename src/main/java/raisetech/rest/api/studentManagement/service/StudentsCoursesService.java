@@ -13,14 +13,12 @@ public class StudentsCoursesService {
 
   private final StudentsCoursesRepository studentsCoursesRepository;
   private final CourseService courseService;
-  private final StudentService studentService;
 
   @Autowired
   public StudentsCoursesService(StudentsCoursesRepository studentsCoursesRepository,
-      CourseService courseService, StudentService studentService) {
+      CourseService courseService) {
     this.studentsCoursesRepository = studentsCoursesRepository;
     this.courseService = courseService;
-    this.studentService = studentService;
   }
 
   /**
@@ -36,15 +34,14 @@ public class StudentsCoursesService {
   /**
    * 受講生コース情報の登録を行います。
    * @param registerStudentsCoursesDetailList 登録する受講生コース情報
-   * @param email 登録する受講生を特定するためのメールアドレス
+   * @param registerStudentId 登録した受講生のID
    */
   public void registerStudentsCourses(List<StudentsCoursesDetail> registerStudentsCoursesDetailList,
-      String email) {
+      int registerStudentId) {
     registerStudentsCoursesDetailList.forEach(studentsCoursesDetail -> {
       int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();
-      int studentId = studentService.findByEmail(email).get().getId();
       StudentsCourses registerStudentsCourses = new StudentsCourses(
-          studentId,
+          registerStudentId,
           courseId,
           studentsCoursesDetail.getCourseStartDate(),
           studentsCoursesDetail.getCourseEndDate()
