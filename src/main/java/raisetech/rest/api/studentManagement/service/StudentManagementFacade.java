@@ -9,9 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
+import raisetech.rest.api.studentManagement.dto.request.RegisterStudentWithCoursesDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentWithCoursesDto;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
-import raisetech.rest.api.studentManagement.exception.IsDeletedStudentException;
-import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
 /**
  * 各サービスを統括して管理するためのサービスです。
@@ -70,14 +71,15 @@ public class StudentManagementFacade {
 
   /**
    * 受講生情報と受講生コース情報の登録処理をハンドリングします。
-   * @param registerStudentWithCoursesDto 受講生情報と受講生コース情報がバインドされたDTO
+   * @param registerDto 受講生情報と受講生コース情報がバインドされたDTO
    * @return 登録した受講生情報と受講生コース情報
    */
   @Transactional
-  public StudentWithCoursesDto registerHandling(StudentWithCoursesDto registerStudentWithCoursesDto) {
-    int registerStudentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
+  public StudentWithCoursesDto registerHandling(
+      RegisterStudentWithCoursesDto registerDto) {
+    int registerStudentId = studentService.registerStudent(registerDto.getRegisterStudentDto());
     studentsCoursesService.registerStudentsCourses(
-        registerStudentWithCoursesDto.getStudentsCourses(),
+        registerDto.getStudentsCourses(),
         registerStudentId
     );
     return getOneStudent(registerStudentId);
@@ -90,8 +92,8 @@ public class StudentManagementFacade {
    * @return 更新した受講生情報と受講生コース情報
    */
   @Transactional
-  public StudentWithCoursesDto updateHandling(int id, StudentWithCoursesDto updateStudentWithCoursesDto) {
-    studentService.updateStudent(id, updateStudentWithCoursesDto.getStudent());
+  public UpdateStudentWithCoursesDto updateHandling(int id, UpdateStudentWithCoursesDto updateStudentWithCoursesDto) {
+    studentService.updateStudent(id, updateStudentWithCoursesDto.getUpdateStudentDto());
     List<StudentsCourses> updateStudentsCoursesList = new ArrayList<>();
     updateStudentWithCoursesDto.getStudentsCourses().forEach(studentsCoursesDetail -> {
       int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();

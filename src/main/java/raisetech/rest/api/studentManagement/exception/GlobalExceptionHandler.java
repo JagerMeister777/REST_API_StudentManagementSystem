@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,6 +31,25 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * バリデーションエラー（@Valid / @Validated）の処理
+   * @param ex MethodArgumentNotValidException
+   * @return Bad Request
+   */
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 400);
+    errorResponse.put("error", "Bad Request");
+    Map<String, String> fieldErrors = new HashMap<>();
+    for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+      fieldErrors.put(error.getField(), error.getDefaultMessage());
+    }
+    errorResponse.put("message", fieldErrors);
+    errorResponse.put("timestamp", formattedTimestamp());
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
 
   /**
    * 登録するコースを既に受講しているときのエラーハンドリング

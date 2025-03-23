@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import raisetech.rest.api.studentManagement.data.Student;
+import raisetech.rest.api.studentManagement.dto.request.RegisterStudentDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentDto;
 
 @Mapper
 public interface StudentRepository {
@@ -32,13 +34,13 @@ public interface StudentRepository {
    * 受講生情報の登録をします。
    * @param student 登録する受講生情報
    */
-  void registerStudent(Student student);
+  void registerStudent(RegisterStudentDto student);
 
   /**
    * 受講生情報の更新をします。
    * @param student 更新する受講生情報
    */
-  void updateStudent(Student student);
+  void updateStudent(UpdateStudentDto student);
 
   /**
    * 受講生情報の論理削除をします

@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.rest.api.studentManagement.data.Student;
+import raisetech.rest.api.studentManagement.dto.request.RegisterStudentDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentDto;
 import raisetech.rest.api.studentManagement.exception.DuplicateStudentException;
 import raisetech.rest.api.studentManagement.exception.IsDeletedStudentException;
 import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
@@ -66,7 +68,7 @@ public class StudentService {
    * @param id 受講生ID
    * @param updateStudent 更新する受講生情報
    */
-  public void updateStudent(int id, Student updateStudent) {
+  public void updateStudent(int id, UpdateStudentDto updateStudent) {
     if (id != updateStudent.getId()) {
       throw new UnMatchIdException(UN_MATCH_ID_EXCEPTION);
     }
@@ -79,10 +81,10 @@ public class StudentService {
    * @param registerStudent 登録する受講生情報
    * @return 登録した受講生情報
    */
-  public int registerStudent(Student registerStudent) {
-    validateDuplicateEmail(registerStudent.getEmail(),registerStudent.getId());
+  public int registerStudent(RegisterStudentDto registerStudent) {
+    validateDuplicateEmail(registerStudent.getEmail(),0);
     studentRepository.registerStudent(registerStudent);
-    return registerStudent.getId();
+    return findByEmail(registerStudent.getEmail()).get().getId();
   }
 
   /**
