@@ -1,8 +1,11 @@
 package raisetech.rest.api.studentManagement.service;
 
+import static raisetech.rest.api.studentManagement.constants.CustomExceptionMessageConst.INVALID_STUDENT_COURSES_COMBINATION_EXCEPTION;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import raisetech.rest.api.studentManagement.constants.CustomExceptionMessageConst;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
 import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
 import raisetech.rest.api.studentManagement.exception.InvalidStudentCoursesCombinationException;
@@ -33,8 +36,9 @@ public class StudentsCoursesService {
 
   /**
    * 受講生コース情報の登録を行います。
+   *
    * @param registerStudentsCoursesDetailList 登録する受講生コース情報
-   * @param registerStudentId 登録した受講生のID
+   * @param registerStudentId                 登録した受講生のID
    */
   public void registerStudentsCourses(List<StudentsCoursesDetail> registerStudentsCoursesDetailList,
       int registerStudentId) {
@@ -62,7 +66,8 @@ public class StudentsCoursesService {
   // TODO 受講生コース情報の単品登録の時に使えるメソッドまだ使わない
   public void isExistingCombination(int studentId, int courseId) {
     if (studentsCoursesRepository.isExistingCombination(studentId, courseId).isPresent()) {
-      throw new InvalidStudentCoursesCombinationException("既に登録するコースを受講しています。");
+      throw new InvalidStudentCoursesCombinationException(
+          INVALID_STUDENT_COURSES_COMBINATION_EXCEPTION);
     }
   }
 }

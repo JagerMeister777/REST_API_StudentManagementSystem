@@ -14,15 +14,17 @@ public class GlobalExceptionHandler {
 
   /**
    * 既に登録されているメールアドレスが登録されるときのエラーハンドリング
+   *
    * @param ex DuplicateStudentException
-   * @return ConflictError
+   * @return Bad Request
    */
   @ExceptionHandler(DuplicateStudentException.class)
-  public ResponseEntity<Map<String,Object>> DuplicateStudentException(DuplicateStudentException ex) {
-    Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",400);
-    errorResponse.put("error","Bad Request");
-    errorResponse.put("message",ex.getMessage());
+  public ResponseEntity<Map<String, Object>> DuplicateStudentException(
+      DuplicateStudentException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 400);
+    errorResponse.put("error", "Bad Request");
+    errorResponse.put("message", ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
@@ -30,62 +32,86 @@ public class GlobalExceptionHandler {
 
   /**
    * 登録するコースを既に受講しているときのエラーハンドリング
+   *
    * @param ex InvalidStudentCourseCombinationException
-   * @return ConflictError
+   * @return Bad Request
    */
   @ExceptionHandler(InvalidStudentCoursesCombinationException.class)
-  public ResponseEntity<Map<String,Object>> invalidStudentCourseCombinationException(
+  public ResponseEntity<Map<String, Object>> invalidStudentCourseCombinationException(
       InvalidStudentCoursesCombinationException ex) {
-    Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",400);
-    errorResponse.put("error","Bad Request");
-    errorResponse.put("message",ex.getMessage());
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 400);
+    errorResponse.put("error", "Bad Request");
+    errorResponse.put("message", ex.getMessage());
+    errorResponse.put("timestamp", formattedTimestamp());
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  /**
+   * パラメータとリクエストのIDが一致していない時のエラーハンドリング
+   * @param ex UnMatchIdException
+   * @return Bad Request
+   */
+  @ExceptionHandler(UnMatchIdException.class)
+  public ResponseEntity<Map<String, Object>> UnMatchIdException(UnMatchIdException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 400);
+    errorResponse.put("error", "Bad Request");
+    errorResponse.put("message", ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
    * 受講生情報が見つからなかった時のエラーハンドリング
+   *
    * @param ex StudentNotFoundException
-   * @return NotFoundError
+   * @return Not Found Error
    */
   @ExceptionHandler(StudentNotFoundException.class)
-  public ResponseEntity<Map<String,Object>> handleStudentNotFound(StudentNotFoundException ex) {
-    Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",404);
-    errorResponse.put("error","Not Found Student");
-    errorResponse.put("message",ex.getMessage());
+  public ResponseEntity<Map<String, Object>> handleStudentNotFound(StudentNotFoundException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 404);
+    errorResponse.put("error", "Not Found Student");
+    errorResponse.put("message", ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
   /**
    * コース情報が見つからなかった時のエラーハンドリング
+   *
    * @param ex CourseNotFoundException
-   * @return NotFoundError
+   * @return Not Found Error
    */
   @ExceptionHandler(CourseNotFoundException.class)
-  public ResponseEntity<Map<String,Object>> handleCourseNotFound(CourseNotFoundException ex) {
-    Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",404);
-    errorResponse.put("error","Not Found Student");
-    errorResponse.put("message",ex.getMessage());
+  public ResponseEntity<Map<String, Object>> handleCourseNotFound(CourseNotFoundException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 404);
+    errorResponse.put("error", "Not Found Student");
+    errorResponse.put("message", ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
+  /**
+   * 受講生情報が論理削除されている時のエラーハンドリング
+   * @param ex IsDeletedStudentException
+   * @return Not Found Error
+   */
   @ExceptionHandler(IsDeletedStudentException.class)
-  public ResponseEntity<Map<String,Object>> isDeletedStudent(IsDeletedStudentException ex) {
-    Map<String,Object> errorResponse = new HashMap<>();
-    errorResponse.put("status",404);
-    errorResponse.put("error","Not Found Student");
-    errorResponse.put("message",ex.getMessage());
+  public ResponseEntity<Map<String, Object>> isDeletedStudent(IsDeletedStudentException ex) {
+    Map<String, Object> errorResponse = new HashMap<>();
+    errorResponse.put("status", 404);
+    errorResponse.put("error", "Not Found Student");
+    errorResponse.put("message", ex.getMessage());
     errorResponse.put("timestamp", formattedTimestamp());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
   /**
    * timestampのフォーマット
+   *
    * @return yyyy-MM-dd HH:mm:ss形式の時刻
    */
   public String formattedTimestamp() {

@@ -19,7 +19,7 @@ public interface StudentRepository {
    * @param id 受講生ID
    * @return 受講生情報
    */
-  Student findByStudentId(int id);
+  Optional<Student> findByStudentId(int id);
 
   /**
    * 特定の受講生情報をメールアドレスで検索し、取得します。

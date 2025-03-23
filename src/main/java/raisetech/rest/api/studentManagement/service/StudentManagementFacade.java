@@ -2,6 +2,7 @@ package raisetech.rest.api.studentManagement.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,14 +60,9 @@ public class StudentManagementFacade {
    * @return 受講生情報
    */
   public StudentWithCoursesDto getOneStudent(int id) {
-    Student student = studentService.findByStudentId(id);
-    if (student == null) {
-      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
-    } else if (student.isDeleted()) {
-      throw new IsDeletedStudentException("受講生情報が削除されています。");
-    }
+    Optional<Student> student = studentService.findByStudentId(id);
     return converter.convertStudentWithCoursesDTO(
-            student,
+            student.get(),
             studentsCoursesService.getOneStudentsCoursesList(id),
             courseService.getAllCourses()
     );
@@ -111,6 +107,10 @@ public class StudentManagementFacade {
     return updateStudentWithCoursesDto;
   }
 
+  /**
+   * 受講生情報の論理削除をします。
+   * @param id 受講生ID
+   */
   public void deleteStudent(int id) {
     studentService.deleteStudent(id);
   }
