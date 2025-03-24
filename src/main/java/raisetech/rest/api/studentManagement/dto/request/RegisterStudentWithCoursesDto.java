@@ -13,6 +13,8 @@ public class RegisterStudentWithCoursesDto {
 
   @Valid
   private RegisterStudentDto student;
+
+  @Valid
   private List<StudentsCoursesDetail> studentsCourses;
 
   public RegisterStudentWithCoursesDto(RegisterStudentDto student,

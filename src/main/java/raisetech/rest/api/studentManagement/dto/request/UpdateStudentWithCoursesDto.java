@@ -13,6 +13,8 @@ public class UpdateStudentWithCoursesDto {
 
   @Valid
   private UpdateStudentDto student;
+
+  @Valid
   private List<StudentsCoursesDetail> studentsCourses;
 
   public UpdateStudentWithCoursesDto(UpdateStudentDto student,
