@@ -10,32 +10,27 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterStudentDto {
-  @NotNull(message = "名前は必須です。")
-  @NotBlank(message = "名前は空にできません。")
+
+  @NotBlank
   private String fullName;
 
-  @NotNull(message = "ふりがなは必須です。")
-  @NotBlank(message = "ふりがなは空にできません。")
+  @NotBlank
   private String furigana;
 
-  @NotNull(message = "ニックネームは必須です。")
-  @NotBlank(message = "ニックネームは空にできません。")
+  @NotBlank
   private String nickName;
 
-  @NotNull(message = "メールアドレスは必須です。")
-  @NotBlank(message = "メールアドレスは空にできません。")
-  @Email(message = "正しいメールアドレスを入力してください。")
+  @NotBlank
+  @Email
   private String email;
 
-  @NotNull(message = "居住地は必須です。")
-  @NotBlank(message = "居住地は空にできません。")
+  @NotBlank
   private String livingArea;
 
   @Min(value = 0, message = "年齢は0以上である必要があります。")
   private int age;
 
-  @NotNull(message = "性別は必須です。")
-  @NotBlank(message = "性別は空にできません。")
+  @NotBlank
   private String gender;
 
   private String remark;

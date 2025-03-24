@@ -12,12 +12,12 @@ import raisetech.rest.api.studentManagement.dto.respons.StudentsCoursesDetail;
 public class RegisterStudentWithCoursesDto {
 
   @Valid
-  private RegisterStudentDto registerStudentDto;
+  private RegisterStudentDto student;
   private List<StudentsCoursesDetail> studentsCourses;
 
-  public RegisterStudentWithCoursesDto(RegisterStudentDto registerStudentDto,
+  public RegisterStudentWithCoursesDto(RegisterStudentDto student,
       List<StudentsCoursesDetail> studentsCourses) {
-    this.registerStudentDto = registerStudentDto;
+    this.student = student;
     this.studentsCourses = studentsCourses;
   }
 }

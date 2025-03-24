@@ -12,29 +12,28 @@ import lombok.Setter;
 public class UpdateStudentDto {
 
   @Min(value = 1, message = "IDは1以上である必要があります。")
-  @NotNull(message = "IDは必須です。")
-  private Integer id;
+  private int id;
 
-  @NotBlank(message = "名前は必須です。")
+  @NotBlank
   private String fullName;
 
-  @NotBlank(message = "ふりがなは必須です。")
+  @NotBlank
   private String furigana;
 
-  @NotBlank(message = "ニックネームは必須です。")
+  @NotBlank
   private String nickName;
 
-  @NotBlank(message = "メールアドレスは必須です。")
-  @Email(message = "正しいメールアドレスを入力してください。")
+  @NotBlank
+  @Email
   private String email;
 
-  @NotBlank(message = "居住地は必須です。")
+  @NotBlank
   private String livingArea;
 
   @Min(value = 0, message = "年齢は0以上である必要があります。")
-  private Integer age;
+  private int age;
 
-  @NotBlank(message = "性別は必須です。")
+  @NotBlank
   private String gender;
 
   private String remark;

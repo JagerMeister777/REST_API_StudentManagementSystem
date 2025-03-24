@@ -77,7 +77,7 @@ public class StudentManagementFacade {
   @Transactional
   public StudentWithCoursesDto registerHandling(
       RegisterStudentWithCoursesDto registerDto) {
-    int registerStudentId = studentService.registerStudent(registerDto.getRegisterStudentDto());
+    int registerStudentId = studentService.registerStudent(registerDto.getStudent());
     studentsCoursesService.registerStudentsCourses(
         registerDto.getStudentsCourses(),
         registerStudentId
@@ -93,7 +93,7 @@ public class StudentManagementFacade {
    */
   @Transactional
   public UpdateStudentWithCoursesDto updateHandling(int id, UpdateStudentWithCoursesDto updateStudentWithCoursesDto) {
-    studentService.updateStudent(id, updateStudentWithCoursesDto.getUpdateStudentDto());
+    studentService.updateStudent(id, updateStudentWithCoursesDto.getStudent());
     List<StudentsCourses> updateStudentsCoursesList = new ArrayList<>();
     updateStudentWithCoursesDto.getStudentsCourses().forEach(studentsCoursesDetail -> {
       int courseId = courseService.findByCourseName(studentsCoursesDetail.getCourseName()).getId();
