@@ -38,7 +38,6 @@ public class StudentManagementFacade {
 
   /**
    * 受講生情報の全件取得をします。
-   *
    * @return 受講生情報のリスト
    */
   public List<StudentWithCoursesDto> getAllStudents() {
@@ -56,7 +55,6 @@ public class StudentManagementFacade {
 
   /**
    * 特定の受講生情報の取得をします。
-   *
    * @param id 受講生ID
    * @return 受講生情報
    */

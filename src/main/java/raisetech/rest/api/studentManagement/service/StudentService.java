@@ -30,7 +30,6 @@ public class StudentService {
 
   /**
    * 受講生情報の全件取得をします。
-   *
    * @return すべての受講生情報リスト
    */
   public List<Student> getAllStudents() {
@@ -64,7 +63,6 @@ public class StudentService {
 
   /**
    * 受講生情報の更新をします。
-   *
    * @param id 受講生ID
    * @param updateStudent 更新する受講生情報
    */

@@ -26,7 +26,6 @@ public class StudentsCoursesService {
 
   /**
    * 特定の受講生の受講しているコース情報を取得
-   *
    * @param id 受講生ID
    * @return 受講生コース情報
    */
@@ -36,7 +35,6 @@ public class StudentsCoursesService {
 
   /**
    * 受講生コース情報の登録を行います。
-   *
    * @param registerStudentsCoursesDetailList 登録する受講生コース情報
    * @param registerStudentId                 登録した受講生のID
    */
@@ -56,7 +54,6 @@ public class StudentsCoursesService {
 
   /**
    * 受講生コース情報の更新を行います。
-   *
    * @param studentsCoursesList 更新する受講生コース情報
    */
   public void updateStudentsCourses(List<StudentsCourses> studentsCoursesList) {

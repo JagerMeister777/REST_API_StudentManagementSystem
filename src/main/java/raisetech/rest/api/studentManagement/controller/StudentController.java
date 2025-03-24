@@ -24,6 +24,7 @@ import raisetech.rest.api.studentManagement.service.StudentManagementFacade;
 @Validated
 public class StudentController {
 
+  /** サービスの統括を行うFacadeクラス */
   private final StudentManagementFacade facade;
 
   @Autowired
@@ -33,7 +34,6 @@ public class StudentController {
 
   /**
    * 登録されているすべての受講生情報を返します。
-   *
    * @return 受講生情報のリスト
    */
   @GetMapping("/students")
@@ -72,9 +72,14 @@ public class StudentController {
     return ResponseEntity.ok(facade.updateHandling(id,updateStudentWithCoursesDto));
   }
 
+  /**
+   * 受講生情報の論理削除を行います。
+   * @param id 受講生ID
+   * @return 完了メッセージ
+   */
   @PatchMapping("/student/{id}")
-  public ResponseEntity<String> deleteStudent(@PathVariable @NotNull(message = "IDを指定して下さい。") int id) {
+  public ResponseEntity<String> deleteStudent(@PathVariable int id) {
     facade.deleteStudent(id);
-    return ResponseEntity.ok("受講生情報を削除しました。 ID:" + id);
+    return ResponseEntity.ok(facade.getOneStudent(id) + "の情報を削除しました。");
   }
 }
