@@ -46,7 +46,7 @@ public class StudentController {
    * @param id 受講生ID
    * @return 受講生情報
    */
-  @GetMapping("/student/{id}")
+  @GetMapping("/students/{id}")
   public ResponseEntity<StudentWithCoursesDto> getOneStudent(@PathVariable int id) {
     return ResponseEntity.ok(facade.getOneStudent(id));
   }
@@ -56,7 +56,7 @@ public class StudentController {
    * @param registerStudentWithCoursesDto 受講生情報と受講生コース情報がバインドされたDTO
    * @return 登録した受講生情報と受講生コース情報
    */
-  @PostMapping("/student")
+  @PostMapping("/students")
   public ResponseEntity<StudentWithCoursesDto> registerStudent(@RequestBody @Valid RegisterStudentWithCoursesDto registerStudentWithCoursesDto) {
     return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDto));
   }
@@ -67,7 +67,7 @@ public class StudentController {
    * @param updateStudentWithCoursesDto 更新する受講生情報
    * @return 更新した受講生情報
    */
-  @PutMapping("/student/{id}")
+  @PutMapping("/students/{id}")
   public ResponseEntity<UpdateStudentWithCoursesDto> updateStudent(@PathVariable int id, @RequestBody @Valid UpdateStudentWithCoursesDto updateStudentWithCoursesDto) {
     return ResponseEntity.ok(facade.updateHandling(id,updateStudentWithCoursesDto));
   }
@@ -77,7 +77,7 @@ public class StudentController {
    * @param id 受講生ID
    * @return 完了メッセージ
    */
-  @PatchMapping("/student/{id}")
+  @PatchMapping("/students/{id}")
   public ResponseEntity<String> deleteStudent(@PathVariable int id) {
     facade.deleteStudent(id);
     return ResponseEntity.ok(facade.getOneStudent(id) + "の情報を削除しました。");
