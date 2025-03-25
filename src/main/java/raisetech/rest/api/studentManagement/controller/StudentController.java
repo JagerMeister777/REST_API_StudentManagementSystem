@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,9 +78,10 @@ public class StudentController {
    * @param id 受講生ID
    * @return 完了メッセージ
    */
-  @PatchMapping("/students/{id}")
+  @DeleteMapping("/students/{id}")
   public ResponseEntity<String> deleteStudent(@PathVariable int id) {
+    String deleteStudentName = facade.getOneStudent(id).getStudent().getFullName();
     facade.deleteStudent(id);
-    return ResponseEntity.ok(facade.getOneStudent(id) + "の情報を削除しました。");
+    return ResponseEntity.ok(deleteStudentName + "の情報を削除しました。");
   }
 }
