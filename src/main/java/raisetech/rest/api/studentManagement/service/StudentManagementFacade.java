@@ -2,14 +2,17 @@ package raisetech.rest.api.studentManagement.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import raisetech.rest.api.studentManagement.converter.StudentsCoursesConverter;
 import raisetech.rest.api.studentManagement.data.Student;
 import raisetech.rest.api.studentManagement.data.StudentsCourses;
+import raisetech.rest.api.studentManagement.dto.request.RegisterStudentWithCoursesDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentDto;
+import raisetech.rest.api.studentManagement.dto.request.UpdateStudentWithCoursesDto;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
-import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 
 /**
  * 各サービスを統括して管理するためのサービスです。
@@ -35,7 +38,6 @@ public class StudentManagementFacade {
 
   /**
    * 受講生情報の全件取得をします。
-   *
    * @return 受講生情報のリスト
    */
   public List<StudentWithCoursesDto> getAllStudents() {
@@ -53,17 +55,13 @@ public class StudentManagementFacade {
 
   /**
    * 特定の受講生情報の取得をします。
-   *
    * @param id 受講生ID
    * @return 受講生情報
    */
   public StudentWithCoursesDto getOneStudent(int id) {
-    Student student = studentService.findByStudentId(id);
-    if (student == null) {
-      throw new StudentNotFoundException("受講生情報が存在しませんでした。");
-    }
+    Optional<Student> student = studentService.findByStudentId(id);
     return converter.convertStudentWithCoursesDTO(
-            student,
+            student.get(),
             studentsCoursesService.getOneStudentsCoursesList(id),
             courseService.getAllCourses()
     );
@@ -71,17 +69,18 @@ public class StudentManagementFacade {
 
   /**
    * 受講生情報と受講生コース情報の登録処理をハンドリングします。
-   * @param registerStudentWithCoursesDto 受講生情報と受講生コース情報がバインドされたDTO
+   * @param registerDto 受講生情報と受講生コース情報がバインドされたDTO
    * @return 登録した受講生情報と受講生コース情報
    */
   @Transactional
-  public StudentWithCoursesDto registerHandling(StudentWithCoursesDto registerStudentWithCoursesDto) {
-    int studentId = studentService.registerStudent(registerStudentWithCoursesDto.getStudent());
+  public StudentWithCoursesDto registerHandling(
+      RegisterStudentWithCoursesDto registerDto) {
+    int registerStudentId = studentService.registerStudent(registerDto.getStudent());
     studentsCoursesService.registerStudentsCourses(
-        registerStudentWithCoursesDto.getStudentsCourses(),
-        registerStudentWithCoursesDto.getStudent().getEmail()
+        registerDto.getStudentsCourses(),
+        registerStudentId
     );
-    return getOneStudent(studentId);
+    return getOneStudent(registerStudentId);
   }
 
   /**
@@ -91,7 +90,7 @@ public class StudentManagementFacade {
    * @return 更新した受講生情報と受講生コース情報
    */
   @Transactional
-  public StudentWithCoursesDto updateHandling(int id, StudentWithCoursesDto updateStudentWithCoursesDto) {
+  public UpdateStudentWithCoursesDto updateHandling(int id, UpdateStudentWithCoursesDto updateStudentWithCoursesDto) {
     studentService.updateStudent(id, updateStudentWithCoursesDto.getStudent());
     List<StudentsCourses> updateStudentsCoursesList = new ArrayList<>();
     updateStudentWithCoursesDto.getStudentsCourses().forEach(studentsCoursesDetail -> {
@@ -106,5 +105,13 @@ public class StudentManagementFacade {
     });
     studentsCoursesService.updateStudentsCourses(updateStudentsCoursesList);
     return updateStudentWithCoursesDto;
+  }
+
+  /**
+   * 受講生情報の論理削除をします。
+   * @param id 受講生ID
+   */
+  public void deleteStudent(int id) {
+    studentService.deleteStudent(id);
   }
 }

@@ -1,5 +1,7 @@
 package raisetech.rest.api.studentManagement.service;
 
+import static raisetech.rest.api.studentManagement.constants.CustomExceptionMessageConst.COURSE_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class CourseService {
    */
   public Course findByCourseName(String courseName) {
     return courseRepository.findByCourseName(courseName)
-        .orElseThrow(() -> new CourseNotFoundException("コース情報が存在しませんでした。"));
+        .orElseThrow(() -> new CourseNotFoundException(COURSE_NOT_FOUND_EXCEPTION));
   }
 
   /**
