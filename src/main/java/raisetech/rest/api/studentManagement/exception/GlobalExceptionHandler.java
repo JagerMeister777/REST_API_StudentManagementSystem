@@ -10,6 +10,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import raisetech.rest.api.studentManagement.dto.respons.ErrorResponse;
+import raisetech.rest.api.studentManagement.dto.respons.FieldsErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,34 +23,37 @@ public class GlobalExceptionHandler {
    * @return Bad Request
    */
   @ExceptionHandler(DuplicateStudentException.class)
-  public ResponseEntity<Map<String, Object>> DuplicateStudentException(
+  public ResponseEntity<ErrorResponse> DuplicateStudentException(
       DuplicateStudentException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 400);
-    errorResponse.put("error", "Bad Request");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+    ErrorResponse errorResponse = new ErrorResponse(
+        400,
+        "Bsd Request",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
    * バリデーションエラー（@Valid / @Validated）の処理
+   *
    * @param ex MethodArgumentNotValidException
    * @return Bad Request
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 400);
-    errorResponse.put("error", "Bad Request");
+  public ResponseEntity<FieldsErrorResponse> handleValidationExceptions(
+      MethodArgumentNotValidException ex) {
     Map<String, String> fieldErrors = new HashMap<>();
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
       fieldErrors.put(error.getField(), error.getDefaultMessage());
     }
-    errorResponse.put("message", fieldErrors);
-    errorResponse.put("timestamp", formattedTimestamp());
-
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    FieldsErrorResponse fieldsErrorResponse = new FieldsErrorResponse(
+        400,
+        "Bad Request",
+        fieldErrors,
+        FieldsErrorResponse.formattedTimestamp()
+    );
+    return new ResponseEntity<>(fieldsErrorResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -58,28 +63,31 @@ public class GlobalExceptionHandler {
    * @return Bad Request
    */
   @ExceptionHandler(InvalidStudentCoursesCombinationException.class)
-  public ResponseEntity<Map<String, Object>> invalidStudentCourseCombinationException(
+  public ResponseEntity<ErrorResponse> invalidStudentCourseCombinationException(
       InvalidStudentCoursesCombinationException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 400);
-    errorResponse.put("error", "Bad Request");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+    ErrorResponse errorResponse = new ErrorResponse(
+        400,
+        "Bad Request",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
    * パラメータとリクエストのIDが一致していない時のエラーハンドリング
+   *
    * @param ex UnMatchIdException
    * @return Bad Request
    */
   @ExceptionHandler(UnMatchIdException.class)
-  public ResponseEntity<Map<String, Object>> UnMatchIdException(UnMatchIdException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 400);
-    errorResponse.put("error", "Bad Request");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+  public ResponseEntity<ErrorResponse> UnMatchIdException(UnMatchIdException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        400,
+        "Bad Request",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
@@ -90,12 +98,13 @@ public class GlobalExceptionHandler {
    * @return Not Found Error
    */
   @ExceptionHandler(StudentNotFoundException.class)
-  public ResponseEntity<Map<String, Object>> handleStudentNotFound(StudentNotFoundException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 404);
-    errorResponse.put("error", "Not Found Student");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+  public ResponseEntity<ErrorResponse> handleStudentNotFound(StudentNotFoundException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        404,
+        "Not Found Student",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
@@ -106,38 +115,30 @@ public class GlobalExceptionHandler {
    * @return Not Found Error
    */
   @ExceptionHandler(CourseNotFoundException.class)
-  public ResponseEntity<Map<String, Object>> handleCourseNotFound(CourseNotFoundException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 404);
-    errorResponse.put("error", "Not Found Student");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+  public ResponseEntity<ErrorResponse> handleCourseNotFound(CourseNotFoundException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        404,
+        "Not Found Course",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
   /**
    * 受講生情報が論理削除されている時のエラーハンドリング
+   *
    * @param ex IsDeletedStudentException
    * @return Not Found Error
    */
   @ExceptionHandler(IsDeletedStudentException.class)
-  public ResponseEntity<Map<String, Object>> isDeletedStudent(IsDeletedStudentException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", 404);
-    errorResponse.put("error", "Not Found Student");
-    errorResponse.put("message", ex.getMessage());
-    errorResponse.put("timestamp", formattedTimestamp());
+  public ResponseEntity<ErrorResponse> isDeletedStudent(IsDeletedStudentException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        404,
+        "Not Found Student",
+        ex.getMessage(),
+        ErrorResponse.formattedTimestamp()
+    );
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-  }
-
-  /**
-   * timestampのフォーマット
-   *
-   * @return yyyy-MM-dd HH:mm:ss形式の時刻
-   */
-  public String formattedTimestamp() {
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    return now.format(formatter);
   }
 }
