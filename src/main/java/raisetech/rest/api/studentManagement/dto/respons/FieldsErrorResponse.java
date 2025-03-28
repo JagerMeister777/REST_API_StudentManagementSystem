@@ -12,10 +12,10 @@ import lombok.Setter;
 @Schema(description = "フィールドエラーレスポンス")
 public class FieldsErrorResponse {
 
-  @Schema(description = "HTTPステータスコード", example = "404")
+  @Schema(description = "HTTPステータスコード", example = "400")
   private int status;
 
-  @Schema(description = "エラーの種類", example = "Not Found Student")
+  @Schema(description = "エラーの種類", example = "Bad Request")
   private String error;
 
   @Schema(description = "フィールドエラーメッセージ", example = "{fullName:名前は必須項目です。,furigana:フリガナは必須項目です。}")

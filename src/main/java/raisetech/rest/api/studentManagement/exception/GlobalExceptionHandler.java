@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
       DuplicateStudentException ex) {
     ErrorResponse errorResponse = new ErrorResponse(
         400,
-        "Bsd Request",
+        "Bad Request",
         ex.getMessage(),
         ErrorResponse.formattedTimestamp()
     );
