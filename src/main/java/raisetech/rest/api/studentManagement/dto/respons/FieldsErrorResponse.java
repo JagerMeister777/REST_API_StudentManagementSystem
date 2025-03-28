@@ -18,7 +18,10 @@ public class FieldsErrorResponse {
   @Schema(description = "エラーの種類", example = "Bad Request")
   private String error;
 
-  @Schema(description = "フィールドエラーメッセージ", example = "{fullName:名前は必須項目です。,furigana:フリガナは必須項目です。}")
+  @Schema(description = "フィールドエラーメッセージ", example = "{\n"
+      + "        \"student.fullName\": \"空白は許可されていません\",\n"
+      + "        \"student.furigana\": \"空白は許可されていません\"\n"
+      + "    }")
   private Map<String, String> messageMap;
 
   @Schema(description = "エラー発生時のタイムスタンプ", example = "2025-03-27T12:00:00")

@@ -153,13 +153,6 @@ public class StudentController {
               )
           ),
           @ApiResponse(
-              responseCode = "400", description = "リクエストパラメーターでblankやNullがあった場合のエラー",
-              content = @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = FieldsErrorResponse.class)
-              )
-          ),
-          @ApiResponse(
               responseCode = "400", description = "リクエストパラメーターとパスパラメーターのIDが一致しなかった場合のエラー",
               content = @Content(
                   mediaType = "application/json",
