@@ -134,25 +134,70 @@ public class StudentController {
     return ResponseEntity.ok(facade.registerHandling(registerStudentWithCoursesDto));
   }
 
-  /**
-   * 特定の受講生情報を更新して、更新結果を返します。
-   *
-   * @param id                          受講生ID
-   * @param updateStudentWithCoursesDto 更新する受講生情報
-   * @return 更新した受講生情報
-   */
+  @Operation(
+      summary = "受講生情報の更新",
+      description = "特定の受講生情報の更新を行います。",
+      responses = {
+          @ApiResponse(
+              responseCode = "200", description = "ok",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = StudentWithCoursesDto.class)
+              )
+          ),
+          @ApiResponse(
+              responseCode = "400", description = "更新するメールアドレスが既に使用されていた場合のエラー（自分自身であればエラーは発生しない。）",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorResponse.class)
+              )
+          ),
+          @ApiResponse(
+              responseCode = "400", description = "リクエストパラメーターでblankやNullがあった場合のエラー",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = FieldsErrorResponse.class)
+              )
+          ),
+          @ApiResponse(
+              responseCode = "400", description = "リクエストパラメーターとパスパラメーターのIDが一致しなかった場合のエラー",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorResponse.class)
+              )
+          )
+
+      }
+  )
   @PutMapping("/students/{id}")
   public ResponseEntity<UpdateStudentWithCoursesDto> updateStudent(@PathVariable int id,
       @RequestBody @Valid UpdateStudentWithCoursesDto updateStudentWithCoursesDto) {
     return ResponseEntity.ok(facade.updateHandling(id, updateStudentWithCoursesDto));
   }
 
-  /**
-   * 受講生情報の論理削除を行います。
-   *
-   * @param id 受講生ID
-   * @return 完了メッセージ
-   */
+  @Operation(
+      summary = "受講生情報の論理削除",
+      description = "受講生情報の論理削除を行います。",
+      responses = {
+          @ApiResponse(
+              responseCode = "200", description = "田中太郎の情報を削除しました。"
+          ),
+          @ApiResponse(
+              responseCode = "404", description = "IDに紐づく受講生情報が存在しなかった場合のエラー",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorResponse.class)
+              )
+          ),
+          @ApiResponse(
+              responseCode = "404", description = "IDに紐づく受講生情報が論理削除されてる場合のエラー",
+              content = @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorResponse.class)
+              )
+          )
+      }
+  )
   @DeleteMapping("/students/{id}")
   public ResponseEntity<String> deleteStudent(@PathVariable int id) {
     String deleteStudentName = facade.getOneStudent(id).getStudent().getFullName();
