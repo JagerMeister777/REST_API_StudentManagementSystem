@@ -1,5 +1,6 @@
 package raisetech.rest.api.studentManagement.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,32 +10,34 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Schema(description = "受講生の個人情報を更新する時に、バインドされるクラスです。")
 public class UpdateStudentDto {
 
+  @Schema(description = "受講生ID" ,type = "int" ,example = "1")
   @Min(value = 1, message = "IDは1以上である必要があります。")
   private int id;
 
-  @NotBlank
+  @Schema(description = "氏名", type = "String", example = "山田太郎")
   private String fullName;
 
-  @NotBlank
+  @Schema(description = "フリガナ", type = "String", example = "ヤマダタロウ")
   private String furigana;
 
-  @NotBlank
+  @Schema(description = "ニックネーム", type = "String", example = "タロー")
   private String nickName;
 
-  @NotBlank
-  @Email
+  @Schema(description = "メールアドレス", type = "String", example = "taro.yamada@example.com")
   private String email;
 
-  @NotBlank
+  @Schema(description = "居住地域", type = "String", example = "東京都港区")
   private String livingArea;
 
-  @Min(value = 0, message = "年齢は0以上である必要があります。")
+  @Schema(description = "年齢", type = "int", example = "27")
   private int age;
 
-  @NotBlank
+  @Schema(description = "性別", type = "String", example = "男")
   private String gender;
 
+  @Schema(description = "備考", type = "String", example = "Javaフルコースを完走したら、AWSコースを受講予定")
   private String remark;
 }
