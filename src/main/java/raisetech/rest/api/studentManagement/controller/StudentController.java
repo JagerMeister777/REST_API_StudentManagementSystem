@@ -6,14 +6,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,9 +23,6 @@ import raisetech.rest.api.studentManagement.dto.request.UpdateStudentWithCourses
 import raisetech.rest.api.studentManagement.dto.respons.ErrorResponse;
 import raisetech.rest.api.studentManagement.dto.respons.FieldsErrorResponse;
 import raisetech.rest.api.studentManagement.dto.respons.StudentWithCoursesDto;
-import raisetech.rest.api.studentManagement.exception.GlobalExceptionHandler;
-import raisetech.rest.api.studentManagement.exception.IsDeletedStudentException;
-import raisetech.rest.api.studentManagement.exception.StudentNotFoundException;
 import raisetech.rest.api.studentManagement.service.StudentManagementFacade;
 
 @RestController
@@ -45,7 +40,7 @@ public class StudentController {
 
   @Operation(
       summary = "受講生情報の全件取得",
-      description = "データベースに格納されている受講生の個人情報と受講しているコース情報の全件を取得します。",
+      description = "受講生の個人情報と受講しているコース情報の全件取得をします。",
       responses = {
           @ApiResponse(
               content = @Content(

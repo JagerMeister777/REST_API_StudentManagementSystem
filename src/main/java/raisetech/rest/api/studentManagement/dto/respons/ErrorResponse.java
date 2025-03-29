@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(description = "エラーレスポンス")
+@Schema(description = "リクエストエラーが発生した時のレスポンスクラスです。")
 public class ErrorResponse {
 
   @Schema(description = "HTTPステータスコード", example = "404")

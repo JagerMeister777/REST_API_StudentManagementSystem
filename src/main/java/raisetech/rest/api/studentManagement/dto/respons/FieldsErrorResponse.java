@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(description = "フィールドエラーレスポンス")
+@Schema(description = "フィールドエラーが発生した時のレスポンスクラスです。")
 public class FieldsErrorResponse {
 
   @Schema(description = "HTTPステータスコード", example = "400")

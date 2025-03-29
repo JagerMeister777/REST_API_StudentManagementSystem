@@ -9,7 +9,7 @@ import raisetech.rest.api.studentManagement.data.Student;
 
 @Getter
 @Setter
-@Schema(description = "GETメソッドが呼び出された時に、受講生情報がバインドされるクラス")
+@Schema(description = "GETメソッドが呼び出された時に、受講生情報がバインドされるクラスです。")
 public class StudentWithCoursesDto {
 
   @Schema(description = "受講生の個人情報")
