@@ -44,7 +44,6 @@ public class StudentController {
       responses = {
           @ApiResponse(
               content = @Content(
-                  mediaType = "application/json",
                   array = @ArraySchema(
                       schema = @Schema(implementation = StudentWithCoursesDto.class)
                   )
@@ -64,21 +63,18 @@ public class StudentController {
           @ApiResponse(
               responseCode = "200", description = "ok",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = StudentWithCoursesDto.class)
               )
           ),
           @ApiResponse(
               responseCode = "404", description = "IDに紐づく受講生情報が存在しなかった場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           ),
           @ApiResponse(
               responseCode = "404", description = "IDに紐づく受講生情報が論理削除されてる場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           )
@@ -96,28 +92,24 @@ public class StudentController {
           @ApiResponse(
               responseCode = "200", description = "ok",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = StudentWithCoursesDto.class)
               )
           ),
           @ApiResponse(
               responseCode = "400", description = "登録するメールアドレスが既に使用されていた場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           ),
           @ApiResponse(
               responseCode = "400", description = "登録するコースを既に受講していた場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           ),
           @ApiResponse(
               responseCode = "400", description = "リクエストパラメーターでblankやNullがあった場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = FieldsErrorResponse.class)
               )
           )
@@ -136,21 +128,18 @@ public class StudentController {
           @ApiResponse(
               responseCode = "200", description = "ok",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = StudentWithCoursesDto.class)
               )
           ),
           @ApiResponse(
               responseCode = "400", description = "更新するメールアドレスが既に使用されていた場合のエラー（自分自身であればエラーは発生しない。）",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           ),
           @ApiResponse(
               responseCode = "400", description = "リクエストパラメーターとパスパラメーターのIDが一致しなかった場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           )
@@ -173,14 +162,12 @@ public class StudentController {
           @ApiResponse(
               responseCode = "404", description = "IDに紐づく受講生情報が存在しなかった場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           ),
           @ApiResponse(
               responseCode = "404", description = "IDに紐づく受講生情報が論理削除されてる場合のエラー",
               content = @Content(
-                  mediaType = "application/json",
                   schema = @Schema(implementation = ErrorResponse.class)
               )
           )

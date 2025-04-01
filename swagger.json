@@ -34,7 +34,7 @@
           "200": {
             "description": "ok",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/StudentWithCoursesDto"
                 }
@@ -44,7 +44,7 @@
           "404": {
             "description": "IDに紐づく受講生情報が論理削除されてる場合のエラー",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -85,7 +85,7 @@
           "200": {
             "description": "ok",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/StudentWithCoursesDto"
                 }
@@ -95,7 +95,7 @@
           "400": {
             "description": "リクエストパラメーターとパスパラメーターのIDが一致しなかった場合のエラー",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -136,7 +136,7 @@
           "404": {
             "description": "IDに紐づく受講生情報が論理削除されてる場合のエラー",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -158,7 +158,7 @@
           "default": {
             "description": "default response",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -191,7 +191,7 @@
           "200": {
             "description": "ok",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/StudentWithCoursesDto"
                 }
@@ -201,7 +201,7 @@
           "400": {
             "description": "リクエストパラメーターでblankやNullがあった場合のエラー",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/FieldsErrorResponse"
                 }
