@@ -1,0 +1,522 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "受講生管理システム",
+    "description": "受講生情報を管理するシステムです。受講生の個人情報と受講しているコース情報を管理、CRUD操作を行えます。"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "ローカル環境"
+    }
+  ],
+  "paths": {
+    "/api/students/{id}": {
+      "get": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "受講生IDで検索",
+        "description": "特定の受講生情報を受講生IDで検索します。IDが存在しなかったり、情報が削除されていた場合はエラーを発生させます。",
+        "operationId": "getOneStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentWithCoursesDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "IDに紐づく受講生情報が論理削除されてる場合のエラー",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "受講生情報の更新",
+        "description": "特定の受講生情報の更新を行います。",
+        "operationId": "updateStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentWithCoursesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentWithCoursesDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "リクエストパラメーターとパスパラメーターのIDが一致しなかった場合のエラー",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "受講生情報の論理削除",
+        "description": "受講生情報の論理削除を行います。",
+        "operationId": "deleteStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "田中太郎の情報を削除しました。",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "IDに紐づく受講生情報が論理削除されてる場合のエラー",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students": {
+      "get": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "受講生情報の全件取得",
+        "description": "受講生の個人情報と受講しているコース情報の全件取得をします。",
+        "operationId": "getAllStudents",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentWithCoursesDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "受講生情報の登録処理",
+        "description": "受講生情報の個人情報と受講するコース情報の登録処理を行います。",
+        "operationId": "registerStudent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterStudentWithCoursesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentWithCoursesDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "リクエストパラメーターでblankやNullがあった場合のエラー",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldsErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Student": {
+        "type": "object",
+        "description": "GETメソッドが呼び出された時に、受講生の個人情報がバインドされるクラスです。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "受講生ID",
+            "example": 1
+          },
+          "fullName": {
+            "type": "string",
+            "description": "氏名",
+            "example": "山田太郎"
+          },
+          "furigana": {
+            "type": "string",
+            "description": "フリガナ",
+            "example": "ヤマダタロウ"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "ニックネーム",
+            "example": "タロー"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス",
+            "example": "taro.yamada@example.com"
+          },
+          "livingArea": {
+            "type": "string",
+            "description": "居住地域",
+            "example": "東京都港区"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32",
+            "description": "年齢",
+            "example": 27
+          },
+          "gender": {
+            "type": "string",
+            "description": "性別",
+            "example": "男"
+          },
+          "remark": {
+            "type": "string",
+            "description": "備考",
+            "example": "Javaフルコースを完走したら、AWSコースを受講予定"
+          },
+          "deleted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "StudentWithCoursesDto": {
+        "type": "object",
+        "description": "GETメソッドが呼び出された時に、受講生情報がバインドされるクラスです。",
+        "properties": {
+          "student": {
+            "$ref": "#/components/schemas/Student",
+            "description": "受講生の個人情報"
+          },
+          "studentsCourses": {
+            "type": "array",
+            "description": "受講生の受講しているコース情報",
+            "items": {
+              "$ref": "#/components/schemas/StudentsCoursesDetail"
+            }
+          }
+        }
+      },
+      "StudentsCoursesDetail": {
+        "type": "object",
+        "description": "受講生情報を登録する際に、受講するコース情報がバインドされるクラスです。",
+        "properties": {
+          "courseName": {
+            "type": "string",
+            "description": "コース名",
+            "example": "Javaフルコース",
+            "minLength": 1
+          },
+          "courseStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "受講開始日",
+            "example": "2025-02-04T17:21:00"
+          },
+          "courseEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "受講終了日",
+            "example": "2025-02-28T17:21:00"
+          }
+        },
+        "required": [
+          "courseEndDate",
+          "courseStartDate"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "リクエストエラーが発生した時のレスポンスクラスです。",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTPステータスコード",
+            "example": 404
+          },
+          "error": {
+            "type": "string",
+            "description": "エラーの種類",
+            "example": "Not Found Student"
+          },
+          "message": {
+            "type": "string",
+            "description": "エラーメッセージ",
+            "example": "受講生情報が存在しません。"
+          },
+          "timeStamp": {
+            "type": "string",
+            "description": "エラー発生時のタイムスタンプ",
+            "example": "2025-03-27T12:00:00"
+          }
+        }
+      },
+      "UpdateStudentDto": {
+        "type": "object",
+        "description": "受講生の個人情報を更新する時に、バインドされるクラスです。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "受講生ID",
+            "example": 1,
+            "minimum": 1
+          },
+          "fullName": {
+            "type": "string",
+            "description": "氏名",
+            "example": "山田太郎"
+          },
+          "furigana": {
+            "type": "string",
+            "description": "フリガナ",
+            "example": "ヤマダタロウ"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "ニックネーム",
+            "example": "タロー"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス",
+            "example": "taro.yamada@example.com"
+          },
+          "livingArea": {
+            "type": "string",
+            "description": "居住地域",
+            "example": "東京都港区"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32",
+            "description": "年齢",
+            "example": 27
+          },
+          "gender": {
+            "type": "string",
+            "description": "性別",
+            "example": "男"
+          },
+          "remark": {
+            "type": "string",
+            "description": "備考",
+            "example": "Javaフルコースを完走したら、AWSコースを受講予定"
+          }
+        }
+      },
+      "UpdateStudentWithCoursesDto": {
+        "type": "object",
+        "description": "受講生情報を更新する際にリクエストボディーがバインドされるクラスです。",
+        "properties": {
+          "student": {
+            "$ref": "#/components/schemas/UpdateStudentDto",
+            "description": "受講生の個人情報"
+          },
+          "studentsCourses": {
+            "type": "array",
+            "description": "受講生の受講するコース情報",
+            "items": {
+              "$ref": "#/components/schemas/StudentsCoursesDetail"
+            }
+          }
+        }
+      },
+      "FieldsErrorResponse": {
+        "type": "object",
+        "description": "フィールドエラーが発生した時のレスポンスクラスです。",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTPステータスコード",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "description": "エラーの種類",
+            "example": "Bad Request"
+          },
+          "messageMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "フィールドエラーメッセージ",
+            "example": {
+              "student.fullName": "空白は許可されていません",
+              "student.furigana": "空白は許可されていません"
+            }
+          },
+          "timeStamp": {
+            "type": "string",
+            "description": "エラー発生時のタイムスタンプ",
+            "example": "2025-03-27T12:00:00"
+          }
+        }
+      },
+      "RegisterStudentDto": {
+        "type": "object",
+        "description": "受講生情報を登録する際に、個人情報がバインドされるクラスです。",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "氏名",
+            "example": "山田太郎",
+            "minLength": 1
+          },
+          "furigana": {
+            "type": "string",
+            "description": "フリガナ",
+            "example": "ヤマダタロウ",
+            "minLength": 1
+          },
+          "nickName": {
+            "type": "string",
+            "description": "ニックネーム",
+            "example": "タロー",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス",
+            "example": "taro.yamada@example.com",
+            "minLength": 1
+          },
+          "livingArea": {
+            "type": "string",
+            "description": "居住地域",
+            "example": "東京都港区",
+            "minLength": 1
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32",
+            "description": "年齢",
+            "example": 27,
+            "minimum": 0
+          },
+          "gender": {
+            "type": "string",
+            "description": "性別",
+            "example": "男",
+            "minLength": 1
+          },
+          "remark": {
+            "type": "string",
+            "description": "備考",
+            "example": "Javaフルコースを完走したら、AWSコースを受講予定"
+          }
+        }
+      },
+      "RegisterStudentWithCoursesDto": {
+        "type": "object",
+        "description": "受講生情報を登録する際にリクエストボディーがバインドされるクラスです。",
+        "properties": {
+          "student": {
+            "$ref": "#/components/schemas/RegisterStudentDto",
+            "description": "受講生の個人情報"
+          },
+          "studentsCourses": {
+            "type": "array",
+            "description": "受講生の受講するコース情報",
+            "items": {
+              "$ref": "#/components/schemas/StudentsCoursesDetail"
+            }
+          }
+        }
+      }
+    }
+  }
+}
